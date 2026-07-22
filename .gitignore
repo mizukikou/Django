@@ -1,0 +1,16 @@
+# 排除 Python 虛擬環境資料夾（不要上傳到 GitHub）
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+.venv/
+venv/
+
+# 排除 Django 本地資料庫與快取
+db.sqlite3
+**/__pycache__/
+*.pyc
+
+# 排除系統暫存
+Thumbs.db
+.DS_Store
