@@ -1,0 +1,15 @@
+def add(x,y):
+    return x+y
+def sub(x,y):
+    return x-y
+def mul(x,y):
+    return x*y
+def div(x,y):
+    return x/y
+
+
+def opreation1(x,y):
+    return [x+y, x-y, x*y, x/y]
+
+def opreation2(x,y):
+    return x+y, x-y, x*y, x/y
