@@ -20,8 +20,5 @@ from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.sayhello),
-    path('hello1/<str:username>/', views.hello1),
-    path('hello2/<str:username>/', views.hello2),
-    path('hello3/<str:username>/', views.hello3),
+    path('homework2/<str:username>/', views.homework2),
 ]
