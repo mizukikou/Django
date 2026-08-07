@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>樂透號碼產生器</title>
+</head>
+<body>
+    <!-- 移除 username，改為單純的標題 -->
+    <h1>產生的樂透號碼為：</h1>
+
+    <ul>
+      {% for numbers in lotto_groups %}
+        <li>
+          <h2>第 {{ forloop.counter }} 組號碼：{{ numbers }}</h2>
+        </li>
+      {% empty %}
+        <li>目前沒有產生任何號碼。</li>
+      {% endfor %}
+    </ul>
+</body>
+</html>
