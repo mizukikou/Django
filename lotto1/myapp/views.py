@@ -5,18 +5,11 @@ import random
 from django.shortcuts import render
 
 # 移除 username 參數
-def lotto2(request):
+def lotto1(request):
     
-    # 產生 6 組大樂透號碼
-    lotto_groups = []
-    for _ in range(6):  #不需要在迴圈內部用到計數器的值時，用_來代替變數名稱。
-        numbers = sorted(random.sample(range(1, 50), 6))
-        # 將每個個位數轉成補0的字串
-        #formatted_numbers = [f"{num:02d}" for num in numbers]
-        #lotto_groups.append(formatted_numbers)
-        lotto_groups.append(numbers)
-    print(lotto_groups)
-    return render(request, 'lotto2.html', locals())
+    numbers = random.sample(range(1, 6), 5)  # 生成 5 個不重複的隨機數字
+    print(numbers)
+    return render(request, 'lotto1.html', locals())
   
 
 
