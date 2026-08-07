@@ -24,4 +24,8 @@ urlpatterns = [
     path('hello1/<str:username>/', views.hello1),
     path('hello2/<str:username>/', views.hello2),
     path('hello3/<str:username>/', views.hello3),
+    path('hello4/<str:username1>/<str:username2>/',views.hello4),
+    path('dice1/', views.dice1),
+    path('dice2/', views.dice2),
+    path('dice3/', views.dice3),
 ]
