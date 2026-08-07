@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>樂透號碼產生器</title>
+  <title>lotto2</title>
 </head>
 <body>
     <!-- 移除 username，改為單純的標題 -->
@@ -12,7 +12,7 @@
     <ul>
       {% for numbers in lotto_groups %}
         <li>
-          <h2>第 {{ forloop.counter }} 組號碼：{{ numbers }}</h2>
+          <h2>第 {{ forloop.counter }} 組：{{ numbers|join:", " }}</h2>
         </li>
       {% empty %}
         <li>目前沒有產生任何號碼。</li>
