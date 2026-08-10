@@ -82,3 +82,31 @@ def get2(request):
         status = False
         print(status)
         return HttpResponse("An error occurred while processing the request.")
+      
+def get3(request, mode):
+    print(f"mode: {mode}")
+    if mode == "save":
+        username = request.GET.get('username', 'None')
+        print(f"Received GET request with username: {username}")
+        password = request.GET.get('password', 'None')
+        half = len(password) // 2
+        masked_password = password[:half] + '*' * (len(password) - half)
+        print(f"Received GET request with password: {masked_password}")
+        #return HttpResponse(f"表單已送出")
+        return render(request, 'get3_response.html', {'mode': mode, 'username': username, 'password': masked_password})
+    elif mode == "load":
+        return render(request, 'get3.html', {'mode': mode})
+        return HttpResponse(f"表單已載入") # 👈 這行永遠不會被執行！
+    else:
+        return HttpResponse(f"未知的操作模式: {mode}")
+      
+def post1(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', 'None')
+        password = request.POST.get('password', 'None')
+        half = len(password) // 2
+        masked_password = password[:half] + '*' * (len(password) - half)
+        print(f"Received POST request with username: {username}, password: {masked_password}")
+        return render(request, 'post1_response.html', {'username': username, 'password': masked_password})
+    else:
+        return render(request, 'post1.html')

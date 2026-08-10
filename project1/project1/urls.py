@@ -31,4 +31,6 @@ urlpatterns = [
     
     path('get1/', views.get1),
     path('get2/', views.get2),
+    path('get3/<str:mode>/', views.get3),
+    path('post1/', views.post1),
 ]

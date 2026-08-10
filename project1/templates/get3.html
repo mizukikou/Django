@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 按下 submit後，這裡的表單會將資料送到 /get3/save/，並使用 GET 方法 -->
+  <form action="/get3/save/" method="get">
+
+    <div>
+      <label for="username">帳號：</label>
+      <input type="text" id="username" name="username" required placeholder="請輸入帳號">
+    </div>
+    <div>
+      <label for="password">密碼：</label>
+      <input type="password" id="password" name="password" required placeholder="請輸入密碼">
+    </div>
+    <div>
+      <button type="submit">登入</button>
+      <button type="reset">重置</button>
+    </div>
+  </form>
+</body>
+</html>
