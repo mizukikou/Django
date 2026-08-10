@@ -8,7 +8,12 @@
 <body>
     <!-- 移除 username，改為單純的標題 -->
     <h1> 產生的樂透號碼為：</h1>
-    <h1>{{ numbers|join:" " }}</h1>
-
+    <h1>{{ numbers|join:"," }}</h1>
+    <!-- 方法2 -->
+    <h1> 產生的樂透號碼為：</h1>
+    <h1>{% for number in numbers %}
+        {{ number }} 
+        {% if not forloop.last %}, {% endif %}
+        {% endfor %}</h1>
 </body>
 </html>
