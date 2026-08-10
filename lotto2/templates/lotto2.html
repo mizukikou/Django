@@ -9,14 +9,10 @@
     <!-- 移除 username，改為單純的標題 -->
     <h1>產生的樂透號碼為：</h1>
 
-    <ul>
-      {% for numbers in lotto_groups %}
-        <li>
-          <h2>第 {{ forloop.counter }} 組：{{ numbers|join:", " }}</h2>
-        </li>
-      {% empty %}
-        <li>目前沒有產生任何號碼。</li>
-      {% endfor %}
-    </ul>
+          {% for numbers in lotto_groups %}
+             <h2>第 {{ forloop.counter }} 組：{{ numbers|join:", " }}</h2>
+              {% empty %}
+             <h2>目前沒有產生任何號碼。</h2>
+          {% endfor %}
 </body>
 </html>
