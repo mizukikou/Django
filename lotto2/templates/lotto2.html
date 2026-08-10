@@ -6,13 +6,45 @@
   <title>lotto2</title>
 </head>
 <body>
-    <!-- 移除 username，改為單純的標題 -->
+  {% load static %}
     <h1>產生的樂透號碼為：</h1>
 
-          {% for numbers in lotto_groups %}
-             <h2>第 {{ forloop.counter }} 組：{{ numbers|join:", " }}</h2>
-              {% empty %}
-             <h2>目前沒有產生任何號碼。</h2>
-          {% endfor %}
+    {% for numbers in lotto_groups %}
+        <!-- 💡 關鍵修改：讓這一整行變成 flex 容器，使文字與球並排，且每一組 (div) 自動換行 -->
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            
+            <!-- 💡 將 h3 改為 span 並加上固定寬度，確保後面的球體對齊 -->
+            <span style="font-size: 1.17em; font-weight: bold; min-width: 80px;">第 {{ forloop.counter }} 組：</span>
+            
+            <!-- 第二層迴圈：把 6 個數字逐一拆開處理 -->
+            {% for num in numbers %}
+                <div style="position: relative; display: inline-block; width: 30px; height: 30px; margin-right: 8px;">
+                    <!-- 底層的球體圖片 -->
+                    <img src="{% static 'image/small_ball_30.png' %}" alt="ball" style="width: 100%; height: 100%; display: block;">
+                    
+                    <!-- 頂層的文字 -->
+                    <span style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #ffffff;
+                        font-weight: bold;
+                        font-size: 14px;
+                        font-family: Arial, sans-serif;
+                    ">
+                        {{ num }}
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    {% empty %}
+        <h2>目前沒有產生任何號碼。</h2>
+    {% endfor %}
 </body>
+
 </html>
