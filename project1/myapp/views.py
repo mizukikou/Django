@@ -102,11 +102,16 @@ def get3(request, mode):
       
 def post1(request):
     if request.method == 'POST':
-        username = request.POST.get('username', 'None')
-        password = request.POST.get('password', 'None')
-        half = len(password) // 2
-        masked_password = password[:half] + '*' * (len(password) - half)
-        print(f"Received POST request with username: {username}, password: {masked_password}")
-        return render(request, 'post1_response.html', {'username': username, 'password': masked_password})
+        username = request.POST.get('username', 'None').strip()  #去除輸入的前後空白
+        password = request.POST.get('password', 'None').strip()  #去除輸入的前後空白
+        print(f"Received POST request with username: {username}, password: {password}")
+        #return HttpResponse('表單已送出')
+        if username == 'admin' and password == '123456':
+            #return HttpResponse('登入成功') 
+            status = True
+        else:
+            #return HttpResponse('登入失敗')
+            status = False
+        return render(request, 'post1_response.html', {'status': status, 'username': username})
     else:
-        return render(request, 'post1.html')
+        return render(request, 'post1.html', locals())

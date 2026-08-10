@@ -6,11 +6,20 @@
   <title>Document</title>
 </head>
 <body>
-       <h1>Django 網站</h1>
-       {% if name != 'None' and city != 'Null' %}
-           <h2>歡迎來自{{ city }} 的 {{ name }}光臨本網站</h2>
-       {% else %}
-           <h2>資料不完整</h2>
-       {% endif %}
+  <!-- 按下 submit後，這裡的表單會將資料送到 /get3/save/，並使用 GET 方法 -->
+  <form action="/post1/" method="post">
+    {% csrf_token %}    <div>
+      <label for="username">帳號：</label>
+      <input type="text" id="username" name="username" required placeholder="請輸入帳號">
+    </div>
+    <div>
+      <label for="password">密碼：</label>
+      <input type="password" id="password" name="password" required placeholder="請輸入密碼">
+    </div>
+    <div>
+      <button type="submit">登入</button>
+      <button type="reset">重置</button>
+    </div>
+  </form>
 </body>
 </html>
