@@ -51,10 +51,34 @@ def dice2(request):
   
 def dice3(request):
     person1 = {'name': 'Alice','phone': '123-456-7890', 'age': 25}
-    #person2 = {'name': 'Bob','phone': '987-654-3210', 'age': 30}
-    person2 = []
+    person2 = {'name': 'Bob','phone': '987-654-3210', 'age': 30}
+    #person2 = []
     person3 = {'name': 'Charlie','phone': '555-555-5555', 'age': 35}
     people = [person1, person2, person3]
     print(f"people: {people}")
     # people = []
     return render(request, 'dice3.html', {'people': people})
+  
+def get1(request):
+    if request.method == 'GET':
+        #name = request.GET['name']  ## 如果沒輸入(空值),就會出錯
+        #city = request.GET['city']  ## 如果沒輸入(空值),就會出錯
+        # basic-07.py範例
+        name = request.GET.get('name', 'None')  ## 如果網址沒給 name，變數就會自動變成 "訪客"
+        city = request.GET.get('city','Null')  ## 如果網址沒給 city，變數就會自動變成 "Null"
+        print(f"Received GET request with name: {name}, city: {city}")
+        return render(request, 'get1.html', {'name': name, 'city': city})
+    #else:
+        #return HttpResponse("This view only handles GET requests.")
+        
+def get2(request):
+    try:
+        name = request.GET['name']  ## 如果沒輸入(空值),就會出錯
+        city = request.GET['city']  ## 如果沒輸入(空值),就會出錯
+        status = True
+        print(f" Received GET request with name: {name}, city: {city}")
+        return render(request, 'get2.html', {'name': name, 'city': city, 'status': status})
+    except:
+        status = False
+        print(status)
+        return HttpResponse("An error occurred while processing the request.")

@@ -28,4 +28,7 @@ urlpatterns = [
     path('dice1/', views.dice1),
     path('dice2/', views.dice2),
     path('dice3/', views.dice3),
+    
+    path('get1/', views.get1),
+    path('get2/', views.get2),
 ]
