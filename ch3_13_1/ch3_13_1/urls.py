@@ -1,5 +1,5 @@
 """
-URL configuration for project1 project.
+URL configuration for demo1 project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -16,22 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.sayhello),
-    path('hello1/<str:username>/', views.hello1),
-    path('hello2/<str:username>/', views.hello2),
-    path('hello3/<str:username>/', views.hello3),
-    path('hello4/<str:username1>/<str:username2>/',views.hello4),
-    path('dice1/', views.dice1),
-    path('dice2/', views.dice2),
-    path('dice3/', views.dice3),
-    
-    path('get1/', views.get1),
-    path('get2/', views.get2),
-    path('get3/<str:mode>/', views.get3),
-    path('post1/', views.post1),
-    path('post2/', views.post2),
 ]

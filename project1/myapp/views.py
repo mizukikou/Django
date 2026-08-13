@@ -115,3 +115,11 @@ def post1(request):
         return render(request, 'post1_response.html', {'status': status, 'username': username})
     else:
         return render(request, 'post1.html', locals())
+      
+def post2(request):
+    if request.method == 'POST':
+        item = request.POST.getlist('item')  # 取得多選框的所有選項
+        print(item)
+        return render(request, 'post2_response.html', {'item': item})
+    else:
+        return render(request, 'post2.html', locals())

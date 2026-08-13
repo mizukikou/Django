@@ -8,7 +8,9 @@
 <body>
   <!-- 按下 submit後，這裡的表單會將資料送到 /get3/save/，並使用 GET 方法 -->
   <form action="/post1/" method="post">
-    {% csrf_token %}    <div>
+    {% csrf_token %}
+    <!--只要您的網頁有讓使用者填寫的表單（Form），且提交方法為 POST，就必須加上這個標籤。   -->
+    <div>
       <label for="username">帳號：</label>
       <input type="text" id="username" name="username" required placeholder="請輸入帳號">
     </div>
