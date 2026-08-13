@@ -12,7 +12,7 @@ def homework3(request):
         userschool = request.POST.get('userschool')   # 學歷
         userthought = request.POST.get('userthought') # 臉書看法
         
-        # 在終端機（小黑窗）印出測試
+        # 在終端機印出測試
         print("勾選的活動：", userinterest)
         print(f"姓名: {username}, 性別: {usersex}, 學歷: {userschool}")
         

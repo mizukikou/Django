@@ -8,6 +8,11 @@
       body{
         background-color: #d1fce8;
       }
+      /* 讓 fieldset 內的所有文字保留原始碼中的連續空白 */
+      /* 僅對有 .space-align 類別的文字保留鍵盤空白，不影響其他欄位 */
+      .space-align {
+        white-space: pre;
+      }
     </style>
   </head>	
   <body>
@@ -20,9 +25,9 @@
       
       <fieldset>
         <legend>個人資訊</legend>
-        姓&nbsp;&nbsp;&nbsp;&nbsp;名：
+        <span class="space-align">姓        名：</span>
         <input type="text" name="username" size="20"><br>
-        性&nbsp;&nbsp;&nbsp;&nbsp;別：
+        <span class="space-align">性        別：</span>
         <input type="radio" name="usersex" value="male">男
         <input type="radio" name="usersex" value="female">女<br>
         最高學歷：

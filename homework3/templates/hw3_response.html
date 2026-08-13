@@ -7,82 +7,42 @@
     <style>
         /* 簡單的排版樣式，讓外觀與您的網頁貼近 */
         body { background-color: #d1f2e5; font-family: Arial, sans-serif; padding: 200px; }
-        fieldset { border: 1px solid #777; margin-bottom: 20px; padding: 15px; }
-        legend { font-weight: bold; font-size: 1.2em; }
-        .form-group { margin-bottom: 10px; }
-        textarea { width: 400px; height: 100px; }
-    </style>
+            /* 💡 統一設定網頁中所有 p 標籤的字體大小與 h2 相同，且維持正常粗細 */
+        /* 💡 讓 p 和 li 的字體一樣大、不加粗 */
+        p, li {
+            font-size: 1.5em;       /* h2 的網頁預設大小為 1.5em */
+            font-weight: normal;    /* 確保文字是細字，不加粗 */
+        }
+
+        /* 💡 只有 p 標籤需要模擬 h2 的上下大間距 */
+        p {
+            margin-top: 0.83em;     
+            margin-bottom: 0.83em;  
+        }
+
+        /* 💡 精準取消 li 之間的所有垂直間距 */
+        li {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+      </style>
 </head>
 <body>
-
-    <!-- 標題與圖片區（這部分您已經做好了） -->
-    <div style="text-align: center; margin-bottom: 20px;">
-        {% load static %}
-        <img src="{% static 'image/profile1.jpg' %}" alt="個人小檔案 Logo">
-    </div>
-
-    <!-- 表單開始：提交到原本設定好的 /homework3/ -->
-    <form action="/homework3/" method="post">
-        {% csrf_token %} <!-- Django 的安全機制，絕對不能漏掉 -->
-
-        <!-- 【個人資訊區塊】 -->
-        <fieldset>
-            <legend>個人資訊</legend>
-            
-            <!-- 1. 姓名：使用單行文字輸入框，後端用 name="username" 取得 -->
-            <div class="form-group">
-                <label for="username">姓 名：</label>
-                <input type="text" id="username" name="username">
-            </div>
-
-            <!-- 2. 性別：使用單選鈕（Radio），同一組的 name 必須相同 -->
-            <div class="form-group">
-                <span>性 別：</span>
-                <input type="radio" id="male" name="gender" value="男">
-                <label for="male">男</label>
-                <input type="radio" id="female" name="gender" value="女">
-                <label for="female">女</label>
-            </div>
-
-            <!-- 3. 最高學歷：使用下拉選單（Select） -->
-            <div class="form-group">
-                <label for="education">最高學歷：</label>
-                <select id="education" name="education">
-                    <option value="高中以下">高中以下</option>
-                    <option value="大學/專科">大學/專科</option>
-                    <option value="研究所">研究所</option>
-                </select>
-            </div>
-        </fieldset>
-
-        <!-- 【其它資訊區塊】 -->
-        <fieldset>
-            <legend>其它資訊</legend>
-            
-            <!-- 4. 休閒活動：複選框（Checkbox），名字全部統一為 name="activities" -->
-            <div class="form-group">
-                <div>您喜歡下列哪些活動（可複選）？</div>
-                <input type="checkbox" id="read" name="activities" value="閱讀"><label for="read">閱讀</label>
-                <input type="checkbox" id="ball" name="activities" value="打球"><label for="ball">打球</label>
-                <input type="checkbox" id="shop" name="activities" value="逛街"><label for="shop">逛街</label>
-                <input type="checkbox" id="music" name="activities" value="聽音樂"><label for="music">聽音樂</label>
-                <input type="checkbox" id="water" name="activities" value="水上運動"><label for="water">水上運動</label>
-                <input type="checkbox" id="travel" name="activities" value="旅行"><label for="travel">旅行</label>
-            </div>
-
-            <!-- 5. 臉書看法：多行文字輸入框（Textarea），後端用 name="fb_opinion" 取得 -->
-            <div class="form-group">
-                <div>您對於使用臉書經營社群有何看法？</div>
-                <textarea name="fb_opinion" id="fb_opinion"></textarea>
-            </div>
-        </fieldset>
-
-        <!-- 按鈕區 -->
-        <div>
-            <input type="submit" value="傳送資料">
-            <input type="reset" value="清除資料">
-        </div>
-    </form>
-
-</body>
+    {% if usersex == 'male' %}
+        <h1>{{ username }} 先生 您好！</h1>
+    {% else %}
+        <h1>{{ username }} 女士 您好！</h1>
+    {% endif %}
+    <p>您的學歷為：{{ userschool }}</p>
+    <p>您喜歡的活動如下：</p>
+    <ul>
+        {% for interest in userinterest %}
+            <li>{{ interest }}</li>
+        {% endfor %}
+    </ul>
+    <p>您對於使用臉書經營社群有何看法為：</p>
+    <p>{{ userthought }}</p>
+</body>  
 </html>
