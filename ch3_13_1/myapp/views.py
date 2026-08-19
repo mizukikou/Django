@@ -32,6 +32,8 @@ def test(request):
     #     print(model_to_dict(data))  # 將每筆資料轉成字典並印在終端機上
     ###############################
     from django.db.models import Q
+    # datas = Student.objects.filter(Q(cID__gt=5) & Q(cSex='M'))  # 取得符合條件的資料
+    #逗號在 filter() 裡只能當 AND 使用。如果您想查「學號大於 5 或者 性別是男性」（只要滿足一項就撈出來），必須使用 Q 物件搭配 |
     # datas = Student.objects.filter(Q(cID=1) | Q(cID__gte=9))  # 取得所有性別為 M 或 F 的學生資料
     # for data in datas:
     #     print(model_to_dict(data))  # 將每筆資料轉成字典並印在終端機上
