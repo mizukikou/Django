@@ -23,7 +23,7 @@
 22,6,change_session,Can change session
 23,6,delete_session,Can delete session
 24,6,view_session,Can view session
-25,7,add_students,Can add students
-26,7,change_students,Can change students
-27,7,delete_students,Can delete students
-28,7,view_students,Can view students
+25,7,add_Student,Can add Student
+26,7,change_Student,Can change Student
+27,7,delete_Student,Can delete Student
+28,7,view_Student,Can view Student

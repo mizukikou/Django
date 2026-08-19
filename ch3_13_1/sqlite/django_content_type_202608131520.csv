@@ -5,4 +5,4 @@
 4,auth,user
 5,contenttypes,contenttype
 6,sessions,session
-7,myapp,students
+7,myapp,Student

@@ -1,15 +1,56 @@
 from django.db import models
 
-# Create your models here.
-class Students(models.Model):
-    cID = models.AutoField(primary_key=True) 
-    cName = models.CharField(max_length=20,blank=False) #blank=False表示欄位是不能為空(必填)
+# 1. 學生模型 (一對多、一對一的主表)
+class Student(models.Model):
+    cID = models.AutoField(primary_key=True)
+    cName = models.CharField(max_length=20, blank=False)
     cSex = models.CharField(max_length=1, blank=False, default='F')
-    cBirthday = models.DateField(blank=False) 
-    #cCreated = models.DateField(auto_now_add=True) #設定加入當下的生成時間
-    #cUpdated = models.DateField(auto_now=True) #設定自動更新生成時間
-    cMail = models.EmailField(max_length=100, blank=False)
+    cBirthday = models.DateField(null=True, blank=True)
+    cEmail = models.CharField(max_length=100, blank=False)
     cPhone = models.CharField(max_length=50, blank=False)
     cAddr = models.CharField(max_length=255, blank=False)
-    cHeight = models.IntegerField(blank=True)
-    cWeight = models.IntegerField(blank=True)
+    cHeight = models.IntegerField(blank=True, null=True) 
+    cWeight = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'myapp_student'  # 👈 對應 Workbench 匯入有資料的單數資料表
+
+# 2. 成績模型 (與 Student 為一對多關聯)
+class Scorelist(models.Model):
+    id = models.AutoField(primary_key=True)
+    # db_column='cID' 確保對應 MySQL 內的 cID_id 實際欄位名稱
+    student = models.ForeignKey('Student', on_delete=models.CASCADE, null=True, db_column='cID') 
+    course = models.CharField(max_length=20, blank=False)
+    score = models.IntegerField(blank=False)
+    
+    class Meta:
+        db_table = 'myapp_scorelist'
+
+# 3. 權限密碼模型 (與 Student 為一對一關聯)
+class Permissions(models.Model):
+    id = models.AutoField(primary_key=True)
+    student = models.OneToOneField('Student', on_delete=models.CASCADE, null=True, db_column='cID')
+    passwd = models.CharField(max_length=100, blank=False)
+    level = models.CharField(max_length=2, blank=False) # 0管理者 #1一般使用者
+
+    class Meta:
+        db_table = 'myapp_permissions'
+
+# 4. 書籍模型 (與 Author 為多對多關聯)
+class Book(models.Model):
+    id = models.AutoField(primary_key=True)
+    isbn = models.CharField(max_length=20, blank=False)
+    name = models.CharField(max_length=32, blank=False)
+    authors = models.ManyToManyField(to='Author')
+
+    class Meta:
+        db_table = 'myapp_book'
+
+# 5. 作者模型
+class Author(models.Model):
+    id = models.AutoField(primary_key=True)
+    aID = models.CharField(max_length=20, blank=False)
+    name = models.CharField(max_length=32, blank=False)
+
+    class Meta:
+        db_table = 'myapp_author'
