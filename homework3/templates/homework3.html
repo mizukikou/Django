@@ -13,10 +13,18 @@
       .space-align {
         white-space: pre;
       }
+      .img1 {
+          display: block;       /* 🎯 關鍵：將圖片從 inline 變成 block 元素 */
+          margin-right: auto;
+          margin-left: auto;    /* 現在這兩行 margin 就能成功把圖片往中間推了 */
+      }
+
     </style>
   </head>	
   <body>
-    <center><img src="{% static 'image/profile1.jpg' %}" alt="個人頭像"></center>
+    <div>
+      <img class="img1" src="{% static 'image/profile1.jpg' %}" alt="個人頭像">
+    </div>
     
     <!-- 表單開始 -->
     <form method="post">
@@ -28,8 +36,8 @@
         <span class="space-align">姓        名：</span>
         <input type="text" name="username" size="20"><br>
         <span class="space-align">性        別：</span>
-        <input type="radio" name="usersex" value="male">男
-        <input type="radio" name="usersex" value="female">女<br>
+        <input type="radio" name="usersex" id="usersex_male" value="male">男
+        <input type="radio" name="usersex" id="usersex_female" value="female">女<br>
         最高學歷：
         <select name="userschool">
           <option value="高中以下">高中以下</option>
@@ -50,6 +58,16 @@
         <input type="checkbox" name="userinterest" value="聽音樂">聽音樂
         <input type="checkbox" name="userinterest" value="水上運動">水上運動
         <input type="checkbox" name="userinterest" value="旅行">旅行<br> 
+        {% comment %} 新增全選按鈕 {% endcomment %}
+        <input type="checkbox" id="select_all" onclick="selectAll(this)">全選<br>
+        <script>
+          function selectAll(source) {
+            checkboxes = document.getElementsByName('userinterest');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+              checkboxes[i].checked = source.checked;
+            }
+          }
+        </script>
         您對於使用臉書經營社群有何看法？<br>
         <textarea name="userthought" cols="45" rows="4"></textarea><br>  
       </fieldset><br>  
