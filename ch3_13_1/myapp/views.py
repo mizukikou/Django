@@ -1,7 +1,8 @@
+from django.http import JsonResponse # 👈 記得在檔案最上方引入 JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
-from myapp.models import Student
+from myapp.models import Student, Scorelist
 
 def test(request):
     # datas = Student.objects.all() # 取得所有學生資料
@@ -92,9 +93,69 @@ def test(request):
     # mysql:select * from myapp_student limit 2;
     #datas = Student.objects.all()[0:2]  # 取得前兩筆學生資料.顯示索引
     # mysql:select * from myapp_student limit 4,2;
-    datas = Student.objects.all()[4:6]  # 取得第 5 到第 6 筆學生資料.顯示切片
-    for data in datas:
-            print(model_to_dict(data))  # 將每筆資料轉成字典並印在終端機上
+    # datas = Student.objects.all()[4:6]  # 取得第 5 到第 6 筆學生資料.顯示切片
+    # for data in datas:
+    #         print(model_to_dict(data))  # 將每筆資料轉成字典並印在終端機上
             
-    return HttpResponse("終端機已成功印出第 5 到第 6 筆學生資料！")
-# Create your views here.
+    # return HttpResponse("終端機已成功印出第 5 到第 6 筆學生資料！")
+    from django.db.models import Avg, Max, Sum, Count, Min
+    # datas = Scorelist.objects.aggregate(Avg('score'), Max('score'), Min('score'), Sum('score'), Count('score'))  # 計算成績的平均值、最大值、最小值、總和、筆數
+    # print(datas)  # 將計算結果印在終端機上
+    # datas = Scorelist.objects.filter(course='國文').aggregate(Avg('score'), Max('score'), Min('score'), Sum('score'), Count('score'))  # 計算國文成績的平均值、最大值、最小值、總和、筆數
+    # print(datas)  # 將計算結果印在終端機上
+    # return HttpResponse("終端機已成功印出國文成績的平均值、最大值、最小值、總和、筆數！")
+    # datas = Student.objects.aggregate(Count('cID'))  # 計算 cID 的筆數
+    # print(datas)  # 將計算結果印在終端機上
+    # return HttpResponse("終端機已成功印出 cID 的筆數！")
+    
+    #   datas = Scorelist.objects.values_list('cID').annotate(Sum('score'))
+    #  # 計算每個學生的成績總和
+    #   for data in datas:
+    #       print(data)  # 將每筆資料印在終端機上
+    #   return HttpResponse("終端機已成功印出每個學生的成績總和！")
+    
+    #   datas = Scorelist.objects.filter(cID__lte=5).values_list('cID').annotate(Sum('score'))  # 計算 cID 小於等於 5 的學生的成績總和
+    #   for data in datas:
+    #       print(data)  # 將每筆資料印在終端機上
+    #  # 💡 將 QuerySet 轉換成 Python 的 list，並用 JsonResponse 回傳
+    #   # safe=False 是因為回傳的是 list（陣列）而不是 dict（字典）
+    #   return JsonResponse(list(datas), safe=False, json_dumps_params={'ensure_ascii': False})
+    
+    # students_exists = Student.objects.filter(cName='Bill3').exists()  # 檢查名為 'Bill1' 的學生是否存在
+    # if not students_exists:
+    #     add = Student(cName='Bill3', cSex='M', cBirthday='2000-01-01', cEmail='bill3@example.com', cPhone='1234567890', cAddr='123 Main St', cHeight=180, cWeight=75)
+    #     add.save()  # 將新學生資料存入資料庫
+    #     return HttpResponse("學生 'Bill3' 不存在，已新增！")
+    # else:
+    #     return HttpResponse("學生 'Bill3' 已存在！")
+          
+    # 第二種方式 使用 create() 方法直接新增資料
+    # students_exists = Student.objects.filter(cName='Bill4').exists()  # 檢查名為 'Bill1' 的學生是否存在
+    # if not students_exists:
+    #     Student.objects.create(cName='Bill4', cSex='M', cBirthday='2000-01-01', cEmail='bill4@example.com', cPhone='1234567890', cAddr='123 Main St', cHeight=180, cWeight=75)
+    #     return HttpResponse("學生 'Bill4' 不存在，已新增！")
+    # else:
+    #     return HttpResponse("學生 'Bill4' 已存在！")
+    
+    # 範例 update  myapp_student set  cheight=188, cWeight=88 WHERE cID=11;
+    # try:
+    #     student = Student.objects.get(cID=11)  # 嘗試取得 cID=11 的學生資料
+    #     student.cHeight = 188  # 更新身高
+    #     student.cWeight = 88   # 更新體重
+    #     student.save()         # 儲存更新後的資料
+    #     return HttpResponse("學生 cID=11 的身高與體重已成功更新！")
+    # except Student.DoesNotExist:
+    #     return HttpResponse("學生不存在，無法更新！")
+    
+    # 更新多筆資料的範例
+    # update_count = Student.objects.filter(cID__gte=11).update(cPhone='1234567890', cWeight=65, cAddr='123 Main St')  # 將 cID 大於等於 11 的學生的電話更新為 '1234567890'，體重更新為 65
+    # return HttpResponse(f"已更新 {update_count} 筆學生資料！")
+    
+    # 刪除資料的範例
+    Student_exists = Student.objects.filter(cID=12).exists()  # 檢查 cID=12 的學生是否存在
+    if not Student_exists:
+        return HttpResponse("學生 cID=12 不存在，無法刪除！")
+    else:
+        Student.objects.filter(cID=12).delete()  # 刪除 cID=12 的學生資料
+        return HttpResponse("學生 cID=12 已成功刪除！")
+    

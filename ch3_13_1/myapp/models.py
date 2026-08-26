@@ -18,18 +18,23 @@ class Student(models.Model):
 # 2. 成績模型 (與 Student 為一對多關聯)
 class Scorelist(models.Model):
     id = models.AutoField(primary_key=True)
-    # db_column='cID' 確保對應 MySQL 內的 cID_id 實際欄位名稱
-    student = models.ForeignKey('Student', on_delete=models.CASCADE, null=True, db_column='cID') 
+    
+    # 👈 關鍵修改：將外鍵 ForeignKey 改為一般的 IntegerField
+    # 👈 變數名稱完美設定為 cID，db_column 設定為你的 MySQL 實體欄位 'cID_id'
+    cID = models.IntegerField(null=True, db_column='cID_id') 
+    
     course = models.CharField(max_length=20, blank=False)
     score = models.IntegerField(blank=False)
     
     class Meta:
         db_table = 'myapp_scorelist'
 
+
 # 3. 權限密碼模型 (與 Student 為一對一關聯)
 class Permissions(models.Model):
     id = models.AutoField(primary_key=True)
-    student = models.OneToOneField('Student', on_delete=models.CASCADE, null=True, db_column='cID')
+    # 将 db_column 改为 'cID_id'
+    student = models.OneToOneField('Student', on_delete=models.CASCADE, null=True, db_column='cID_id')
     passwd = models.CharField(max_length=100, blank=False)
     level = models.CharField(max_length=2, blank=False) # 0管理者 #1一般使用者
 
