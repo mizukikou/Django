@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <h2>顯示學生資料</h2>
+    {% for data in datas %}
+        <p>學號：{{ data.cid }}</p>
+        <p>姓名：{{ data.cname }}</p>
+        {% if data.csex == 'M' %}
+            <p>性別：男</p>
+        {% else %}
+            <p>性別：女</p>
+        {% endif %}
+        <p>生日：{{ data.cbirthday }}</p>
+        <p>電話：{{ data.cphone }}</p>
+        <p>地址：{{ data.caddr }}</p>
+        <p>郵件：{{ data.cemail }}</p>
+    {% endfor %}
+</body>
+</html>
