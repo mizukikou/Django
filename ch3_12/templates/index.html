@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}學生資料管理系統{% endblock %}
+{% block content %}
+<style>
+    h1,h2{
+        text-align: center;
+    }
+    table,th,td{
+        border: 1px solid rgb(199, 22, 110);
+        border-collapse: collapse;
+    }
+    table{
+        margin: auto;
+    }
+    .head_content{
+        text-align: center;
+    }
+</style>
+<!-- class（類別）是最常用來綁定網頁外觀（CSS）與結構（HTML）的橋樑。 -->
+<div class="head_content">
+    <h1>學生資料管理系統</h1>
+    <!-- {% url 'post' %}：日後只要改變urls.py裡面的name='post'就可以了 -->
+    <h2>目前的資料筆數：{{ data_count }}, <a href="{% url 'post' %}">新增學生資料</a></h2>
+    <!-- <h2>目前的資料筆數：{{ data_count }}, <a href="/post/">新增學生資料</a></h2> -->
+  </div>
+<div>
+    <table>
+      <tr>
+        <th>學號</th>
+        <th>姓名</th>
+        <th>性別</th>
+        <th>生日</th>
+        <th>電話</th>
+        <th>地址</th>
+        <th>信箱</th>
+        <th>編輯</th>
+      </tr>
+      {% for student in resultlist %}
+      <tr>
+          <td>{{ student.cid }}</td>
+          <td>{{ student.cname }}</td>
+          <td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td>
+          <td>{{ student.cbirthday }}</td>
+          <td>{{ student.cphone }}</td>
+          <td>{{ student.caddr }}</td> 
+          <td>{{ student.cemail }}</td>
+          <td>
+              <a href="/edit/{{ student.cid }}/">編輯</a>
+              <a href="/delete/{{ student.cid }}/">刪除</a>
+              {% comment %} <a href="/edit/?cid={{student.id}}">編輯</a> {% endcomment %}
+              {% comment %} <a href="/delete/?cid={{student.id}}">刪除</a> {% endcomment %}
+            </td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+{% endblock %}

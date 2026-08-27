@@ -99,21 +99,28 @@ def test(request):
             
     # return HttpResponse("終端機已成功印出第 5 到第 6 筆學生資料！")
     from django.db.models import Avg, Max, Sum, Count, Min
+    # mysql:select avg(score), max(score), min(score), sum(score), count(score) from myapp_scorelist;
     # datas = Scorelist.objects.aggregate(Avg('score'), Max('score'), Min('score'), Sum('score'), Count('score'))  # 計算成績的平均值、最大值、最小值、總和、筆數
     # print(datas)  # 將計算結果印在終端機上
+    
+    # mysql:select avg(score), max(score), min(score), sum(score), count(score) from myapp_scorelist where course='國文';
     # datas = Scorelist.objects.filter(course='國文').aggregate(Avg('score'), Max('score'), Min('score'), Sum('score'), Count('score'))  # 計算國文成績的平均值、最大值、最小值、總和、筆數
     # print(datas)  # 將計算結果印在終端機上
     # return HttpResponse("終端機已成功印出國文成績的平均值、最大值、最小值、總和、筆數！")
+    
+    # mysql:select cID, count(cID) from myapp_student group by cID;
     # datas = Student.objects.aggregate(Count('cID'))  # 計算 cID 的筆數
     # print(datas)  # 將計算結果印在終端機上
     # return HttpResponse("終端機已成功印出 cID 的筆數！")
     
+    # mysql:select cID, sum(score) from myapp_scorelist group by cID;
     #   datas = Scorelist.objects.values_list('cID').annotate(Sum('score'))
     #  # 計算每個學生的成績總和
     #   for data in datas:
     #       print(data)  # 將每筆資料印在終端機上
     #   return HttpResponse("終端機已成功印出每個學生的成績總和！")
     
+    # mysql:select cID, sum(score) from myapp_scorelist where cID<=5 group by cID;
     #   datas = Scorelist.objects.filter(cID__lte=5).values_list('cID').annotate(Sum('score'))  # 計算 cID 小於等於 5 的學生的成績總和
     #   for data in datas:
     #       print(data)  # 將每筆資料印在終端機上
@@ -121,6 +128,12 @@ def test(request):
     #   # safe=False 是因為回傳的是 list（陣列）而不是 dict（字典）
     #   return JsonResponse(list(datas), safe=False, json_dumps_params={'ensure_ascii': False})
     
+    # INSERT INTO myapp_student (cName, cSex, cBirthday, cEmail, cPhone, cAddr, cHeight, cWeight)
+    # SELECT 'Bill3', 'M', '2000-01-01', 'bill3@example.com', '1234567890', '123 Main St', 180, 75
+    # FROM DUAL
+    # WHERE NOT EXISTS (
+    #     SELECT 1 FROM myapp_student WHERE cName = 'Bill3'
+    # );
     # students_exists = Student.objects.filter(cName='Bill3').exists()  # 檢查名為 'Bill1' 的學生是否存在
     # if not students_exists:
     #     add = Student(cName='Bill3', cSex='M', cBirthday='2000-01-01', cEmail='bill3@example.com', cPhone='1234567890', cAddr='123 Main St', cHeight=180, cWeight=75)
@@ -148,10 +161,12 @@ def test(request):
     #     return HttpResponse("學生不存在，無法更新！")
     
     # 更新多筆資料的範例
+    # mysql:UPDATE myapp_student SET cPhone='1234567890', cWeight=65, cAddr='123 Main St' WHERE cID>=11;
     # update_count = Student.objects.filter(cID__gte=11).update(cPhone='1234567890', cWeight=65, cAddr='123 Main St')  # 將 cID 大於等於 11 的學生的電話更新為 '1234567890'，體重更新為 65
     # return HttpResponse(f"已更新 {update_count} 筆學生資料！")
     
     # 刪除資料的範例
+    # mysql:DELETE FROM myapp_student WHERE cID=12;
     Student_exists = Student.objects.filter(cID=12).exists()  # 檢查 cID=12 的學生是否存在
     if not Student_exists:
         return HttpResponse("學生 cID=12 不存在，無法刪除！")

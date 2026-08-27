@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import HttpResponse
 from myapp.models import *
 from django.forms.models import model_to_dict
@@ -55,52 +55,4 @@ def search_name(request):
     return render(request, "serach_name.html")
 
 def index(request):
-    # ORM
-    resultlist = Students.objects.all()
-    for result in resultlist:
-        print(model_to_dict(result))
-    data_count = resultlist.count()
-    print(f"資料總筆數：{data_count}")
-    return render(request, "index.html", locals())
-  
-def post(request):
-    # return HttpResponse("Hello, world. You're at the post index.")
-    if request.method == "POST":
-        # 讀取前端表單送來的資料
-        cname = request.POST.get("cname")
-        cid = request.POST.get("cid")
-        csex = request.POST.get("csex")
-        cemail = request.POST.get("cemail")
-        cphone = request.POST.get("cphone")
-        cbirthday = request.POST.get("cbirthday")
-        caddr = request.POST.get("caddr")
-
-        print(f"已新增學生資料：cname={cname}, cid={cid}, csex={csex}, cemail={cemail}, cphone={cphone}, cbirthday={cbirthday}, caddr={caddr}")
-        # 將讀取到的資料寫入資料庫
-        add = Students(cname=cname, cid=cid, csex=csex, cemail=cemail, cphone=cphone, cbirthday=cbirthday, caddr=caddr)
-        add.save()
-        return redirect("/index/") # 新增資料後，導向到首頁
-    else:
-        return render(request, "post.html", locals())
-      
-def edit(request, cid):
-    # 讀取指定 cid 的學生資料
-    student = Students.objects.get(cid=cid)
-    print(model_to_dict(student))
-    if request.method == "POST":
-        # 讀取前端表單送來的資料
-        student.cname = request.POST.get("cname")
-        student.csex = request.POST.get("csex")
-        student.cemail = request.POST.get("cemail")
-        student.cphone = request.POST.get("cphone")
-        student.cbirthday = request.POST.get("cbirthday")
-        student.caddr = request.POST.get("caddr")
-
-        print(f"已更新學生資料：cname={student.cname}, cid={student.cid}, csex={student.csex}, cemail={student.cemail}, cphone={student.cphone}, cbirthday={student.cbirthday}, caddr={student.caddr}")
-        
-        # 將更新後的資料寫入資料庫
-        student.save()
-        return redirect("/index/") # 更新資料後，導向到首頁
-    else:
-        return render(request, "edit.html", {"student": student})
-  
+    return HttpResponse("Hello, world. You're at the index page.")
