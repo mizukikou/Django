@@ -103,4 +103,21 @@ def edit(request, cid):
         return redirect("/index/") # 更新資料後，導向到首頁
     else:
         return render(request, "edit.html", {"student": student})
+      
+def delete(request, cid):
+    if request.method == "POST":
+        # 讀取指定 cid 的學生資料
+        student = Students.objects.get(cid=cid)
+        print(model_to_dict(student))
+        
+        # 刪除該筆學生資料
+        student.delete()
+        print(f"已刪除學生資料：cname={student.cname}, cid={student.cid}")
+        
+        return redirect("/index/") # 刪除資料後，導向到首頁
+    else:
+        # 讀取指定 cid 的學生資料
+        student = Students.objects.get(cid=cid)
+        print(model_to_dict(student))
+        return render(request, "delete.html", {"student": student})
   
