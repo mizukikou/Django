@@ -23,4 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("search_list/", views.search_list, name="search_list"),
     path('search_name/', views.search_name, name='search_name'),
+    path('index/', views.index, name='index'),
+    path('post/', views.post, name='post'),
+    path('edit/<int:cid>/', views.edit, name='edit'),
 ]
