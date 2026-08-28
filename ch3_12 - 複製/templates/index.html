@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}學生資料管理系統{% endblock %}
+{% block content %}
+<style>
+    h1, h2, h3 {
+        text-align: center;
+    }
+    table, th, td {
+        border: 1px solid rgb(199, 22, 110);
+        border-collapse: collapse;
+    }
+    table {
+        margin: 25px auto;
+    }
+    .head_content {
+        text-align: center;
+    }
+</style>
+
+<div class="head_content">
+    <h1>學生資料管理系統</h1>
+    <h2>目前的資料筆數：{{ data_count }}, <a href="{% url 'post' %}">新增學生資料</a></h2>
+    <div>
+        <form action="{% url 'index' %}" method="get">
+            <label for="site_search">搜尋關鍵字：</label>
+            <!-- 💡 輸入框使用 search_query 保留使用者輸入的字串 -->
+            <input type="text" id="site_search" name="site_search" value="{{ search_query }}">
+            <button type="submit">搜尋</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <table>
+      <tr>
+        <th>序號</th>
+        <th>學號</th>
+        <th>姓名</th>
+        <th>性別</th>
+        <th>生日</th>
+        <th>電話</th>
+        <th>地址</th>
+        <th>信箱</th>
+        <th>編輯</th>
+      </tr>
+      {% for student in resultlist %}
+      <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ student.cid }}</td>
+          <td>{{ student.cname }}</td>
+          <td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td>
+          <td>{{ student.cbirthday|date:"Y-m-d" }}</td>
+          <td>{{ student.cphone }}</td>
+          <td>{{ student.caddr }}</td> 
+          <td>{{ student.cemail }}</td>
+          <td>
+              <a href="/edit/{{ student.cid }}/">編輯</a>
+              <a href="/delete/{{ student.cid }}/">刪除</a>
+          </td>
+      </tr>
+      {% endfor %}
+    </table>
+</div>
+
+<div>
+    <h3>
+        <!-- 💡 最前頁：將變數統一修正為 search_query -->
+        {% if resultlist.has_previous %}
+            <a href="?page=1&site_search={{ search_query }}">最前頁</a>
+        {% else %}
+            最前頁
+        {% endif %}
+
+        <!-- 💡 上一頁：將變數統一修正為 search_query -->
+        {% if resultlist.has_previous %}
+            <a href="?page={{ resultlist.previous_page_number }}&site_search={{ search_query }}">上一頁</a>
+        {% else %}
+            上一頁
+        {% endif %}
+
+        <span style="margin: 0 15px; font-size: 1.1rem; color: #495057; font-weight: normal;">
+            第 {{ resultlist.number }} 頁 / 共 {{ resultlist.paginator.num_pages }} 頁
+        </span>
+
+        <!-- 💡 下一頁：將變數統一修正為 search_query -->
+        {% if resultlist.has_next %}
+            <a href="?page={{ resultlist.next_page_number }}&site_search={{ search_query }}">下一頁</a>
+        {% else %}
+            下一頁
+        {% endif %}
+
+        <!-- 💡 最後頁：將變數統一修正為 search_query -->
+        {% if resultlist.has_next %}
+            <a href="?page={{ resultlist.paginator.num_pages }}&site_search={{ search_query }}">最後頁</a>
+        {% else %}
+            最後頁
+        {% endif %}
+    </h3>
+    
+    <h4 style="text-align: center;">
+        <!-- 💡 數字分頁清單：將變數統一修正為 search_query -->
+        {% for num in resultlist.paginator.page_range %}
+            {% if num == resultlist.number %}
+                <strong style="color: #e83e8c; margin: 0 5px;">{{ num }}</strong>
+            {% else %}
+                <a href="?page={{ num }}&site_search={{ search_query }}" style="margin: 0 5px;">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+    </h4>
+</div>
+{% endblock %}

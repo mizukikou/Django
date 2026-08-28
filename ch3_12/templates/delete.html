@@ -2,122 +2,53 @@
 {% block title %}學生資料管理系統 - 刪除資料{% endblock %}
 
 {% block content %}
-<style>
-    /* 1. 讓整體刪除方塊精緻居中，並限制寬度 */
-    .delete-container {
-        text-align: left;
-        border: 1px solid rgb(220, 53, 69); /* 💡 刪除頁面改用微紅色調邊框，提示這是一個危險操作 */
-        padding: 30px 40px;
-        margin: 40px auto;
-        width: 350px;
-        /* border-radius: 8px; */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* 淡淡的陰影，讓方塊更有立體感 */
-        background-color: #fffcfc; /* 微微帶有一點點粉白的背景色 */
-    }
+<div class="container" style="max-width: 640px;">
+    <h1 style="color:#dc3545;">⚠️ 確定要刪除嗎？</h1>
 
-    /* 2. 標題與內文美化 */
-    .delete-container h2 {
-        color: #dc3545; /* 警告紅 */
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 20px;
-        font-size: 1.4rem;
-    }
+    <div class="alert" style="border-color:#ffcccb; color:#a94442;">
+        刪除後將無法復原，請再次確認以下資料。
+    </div>
 
-    .student-info,tr,th {
-        border:#212529 1px solid;
-        border-collapse: collapse;
-        font-size: 1.1rem;
-        margin-bottom: 25px;
-        line-height: 1.6;
-        color: #495057;
-    }
-
-    .student-info strong {
-        color: #212529;
-    }
-
-    /* 3. 按鈕與控制區排版 */
-    .action-container {
-        display: flex;
-        justify-content: space-between; /* 讓「確認刪除」與「取消」一左一右對齊 */
-        align-items: center;
-    }
-
-    /* 4. 刪除按鈕美化 */
-    .btn-delete {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        font-size: 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .btn-delete:hover {
-        background-color: #bd2130; /* 滑鼠移上去時顏色變深 */
-    }
-
-    /* 5. 取消連結美化（把它包裝得像一個優雅的灰色按鈕） */
-    .btn-cancel {
-        text-decoration: none;
-        background-color: #6c757d;
-        color: white;
-        padding: 8px 16px;
-        font-size: 1rem;
-        border-radius: 4px;
-        transition: background-color 0.2s;
-    }
-
-    .btn-cancel:hover {
-        background-color: #5a6268;
-    }
-</style>
-
-<!-- 使用新設計的 delete-container 外盒包覆，確保網頁結構完美居中 -->
-<div class="delete-container">
-    <h2>⚠️ 確定要刪除嗎？</h2>
-    
-    <table class="student-info">
-        <tr>
-            <th>學生姓名：</th>
-            <td>{{ student.cname }}</td>
-        </tr>
-        <tr>
-            <th>學生編號：</th>
-            <td>{{ student.cid }}</td>
-        </tr>
-        <tr>
-            <th>性別：</th>
-            <td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td>
-        </tr>
-        <tr>
-            <th>生日：</th>
-            <td>{{ student.cbirthday|date:"Y-m-d" }}</td>
-        </tr>
-        <tr>
-            <th>電話：</th>
-            <td>{{ student.cphone }}</td>
-        </tr>
-        <tr>
-            <th>地址：</th>
-            <td>{{ student.caddr }}</td>
-        </tr>
-        <tr>
-            <th>信箱：</th>
-            <td>{{ student.cemail }}</td>
-        </tr>
+    <table>
+        <tbody>
+            <tr><th style="width:120px;">學號</th><td>{{ student.cid }}</td></tr>
+            <tr><th>姓名</th><td>{{ student.cname }}</td></tr>
+            <tr><th>性別</th><td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td></tr>
+            <tr><th>生日</th><td>{{ student.cbirthday|date:"Y-m-d" }}</td></tr>
+            <tr><th>電話</th><td>{{ student.cphone }}</td></tr>
+            <tr><th>地址</th><td>{{ student.caddr }}</td></tr>
+            <tr><th>信箱</th><td>{{ student.cemail }}</td></tr>
+        </tbody>
     </table>
 
-    <form method="post" action="{% url 'delete' student.cid %}">
+    <form method="post" action="{% url 'delete' student.cid %}" class="delete-form">
         {% csrf_token %}
-        <div class="action-container">
-            <!-- 補上對應的 Class 讓按鈕與連結變得精美大方 -->
-            <button type="submit" class="btn-delete">確認刪除</button>
-            <a href="{% url 'index' %}" class="btn-cancel">取消</a>
+        <div class="actions">
+            <button type="submit" class="btn btn-danger">🗑️ 確認刪除</button>
+            <a href="{% url 'index' %}" class="btn btn-info">← 取消</a>
         </div>
     </form>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+function confirmDelete() {
+    let text = "⚠️ 確定要刪除這筆資料嗎？\n\n";
+    text += "學生姓名：{{ student.cname }}\n";
+    text += "學生編號：{{ student.cid }}\n";
+    return confirm(text);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const deleteForm = document.querySelector('.delete-form');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function (event) {
+            if (!confirmDelete()) {
+                event.preventDefault();
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

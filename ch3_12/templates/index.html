@@ -1,57 +1,94 @@
 {% extends "base.html" %}
 {% block title %}學生資料管理系統{% endblock %}
 {% block content %}
-<style>
-    h1,h2{
-        text-align: center;
-    }
-    table,th,td{
-        border: 1px solid rgb(199, 22, 110);
-        border-collapse: collapse;
-    }
-    table{
-        margin: auto;
-    }
-    .head_content{
-        text-align: center;
-    }
-</style>
-<!-- class（類別）是最常用來綁定網頁外觀（CSS）與結構（HTML）的橋樑。 -->
-<div class="head_content">
+<div class="container">
     <h1>學生資料管理系統</h1>
-    <!-- {% url 'post' %}：日後只要改變urls.py裡面的name='post'就可以了 -->
-    <h2>目前的資料筆數：{{ data_count }}, <a href="{% url 'post' %}">新增學生資料</a></h2>
-    <!-- <h2>目前的資料筆數：{{ data_count }}, <a href="/post/">新增學生資料</a></h2> -->
-  </div>
-<div>
+
+    <div class="info-card">
+        <p>目前的資料筆數：<strong>{{ data_count }}</strong> 筆</p>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'post' %}" class="btn btn-success">➕ 新增學生資料</a>
+        <a href="{% url 'search_name' %}" class="btn btn-info">🔎 進階姓名搜尋</a>
+    </div>
+
+    <form action="{% url 'index' %}" method="get" class="search-bar">
+        <label for="site_search" style="margin:0;">搜尋關鍵字：</label>
+        <input type="search" id="site_search" name="site_search"
+               placeholder="姓名 / 學號 / 電話 / 地址 / 信箱"
+               value="{{ search_query }}">
+        <button type="submit" class="btn btn-primary">🔍 搜尋</button>
+    </form>
+
     <table>
-      <tr>
-        <th>學號</th>
-        <th>姓名</th>
-        <th>性別</th>
-        <th>生日</th>
-        <th>電話</th>
-        <th>地址</th>
-        <th>信箱</th>
-        <th>編輯</th>
-      </tr>
-      {% for student in resultlist %}
-      <tr>
-          <td>{{ student.cid }}</td>
-          <td>{{ student.cname }}</td>
-          <td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td>
-          <td>{{ student.cbirthday }}</td>
-          <td>{{ student.cphone }}</td>
-          <td>{{ student.caddr }}</td> 
-          <td>{{ student.cemail }}</td>
-          <td>
-              <a href="/edit/{{ student.cid }}/">編輯</a>
-              <a href="/delete/{{ student.cid }}/">刪除</a>
-              {% comment %} <a href="/edit/?cid={{student.id}}">編輯</a> {% endcomment %}
-              {% comment %} <a href="/delete/?cid={{student.id}}">刪除</a> {% endcomment %}
-            </td>
-      </tr>
-      {% endfor %}
+        <thead>
+            <tr>
+                <th>序號</th>
+                <th>學號</th>
+                <th>姓名</th>
+                <th>性別</th>
+                <th>生日</th>
+                <th>電話</th>
+                <th>地址</th>
+                <th>信箱</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in resultlist %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ student.cid }}</td>
+                <td>{{ student.cname }}</td>
+                <td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td>
+                <td>{{ student.cbirthday|date:"Y-m-d" }}</td>
+                <td>{{ student.cphone }}</td>
+                <td>{{ student.caddr }}</td>
+                <td>{{ student.cemail }}</td>
+                <td>
+                    <a href="/edit/{{ student.cid }}/" class="btn btn-warning">✏️ 編輯</a>
+                    <a href="/delete/{{ student.cid }}/" class="btn btn-danger">🗑️ 刪除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">
+                    <div class="alert">目前沒有任何學生資料 🌷</div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
+    <div class="pagination">
+        {% if resultlist.has_previous %}
+            <a href="?page=1&site_search={{ search_query }}">« 最前頁</a>
+            <a href="?page={{ resultlist.previous_page_number }}&site_search={{ search_query }}">‹ 上一頁</a>
+        {% else %}
+            <span>« 最前頁</span>
+            <span>‹ 上一頁</span>
+        {% endif %}
+
+        {% for num in resultlist.paginator.page_range %}
+            {% if num == resultlist.number %}
+                <span class="current">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}&site_search={{ search_query }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if resultlist.has_next %}
+            <a href="?page={{ resultlist.next_page_number }}&site_search={{ search_query }}">下一頁 ›</a>
+            <a href="?page={{ resultlist.paginator.num_pages }}&site_search={{ search_query }}">最後頁 »</a>
+        {% else %}
+            <span>下一頁 ›</span>
+            <span>最後頁 »</span>
+        {% endif %}
+    </div>
+
+    <div class="count-info">
+        第 {{ resultlist.number }} 頁 / 共 {{ resultlist.paginator.num_pages }} 頁
+    </div>
 </div>
 {% endblock %}

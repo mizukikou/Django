@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}學生資料管理系統 - 刪除資料{% endblock %}
+
+{% block javascript %}
+
+ {% comment %} 常見的網頁樣板（Template）繼承問題：你的子頁面寫了 {% block javascript %}，但如果母面板 base.html 裡面沒有挖相對應的洞去接它，那整段防護的 JavaScript 就不會出現在畫面上，瀏覽器自然完全讀不到，表單就直接送出了。
+
+ 在 Django 模板（Template）中，不論是要註解純文字、HTML 還是 Django 標籤（如 {% block %}），都不能使用一般的 HTML 註解（<!-- -->），因為 Django 依然會去解析內部的標籤，進而導致語法衝突或錯誤。以下為你提供兩種最正確的註解方式：做法一：使用 Django 內建的註解標籤 '{% comment %}'（最推薦）
+ 做法二：單行註解 {# ... #}（適合短文字）
+ Django 模板（Django Template） 是 Django 框架中用來產生動態網頁（HTML）的文字渲染系統。語法：{{ 變數名稱 }}
+ {% endcomment %}
+
+{% endblock %}
+
+
+{% block content %}
+<script>
+function confirmDelete() {
+    let text = "⚠️ 確定要刪除這筆資料嗎？\n\n";
+    text += "學生姓名：" + "{{ student.cname }}\n";
+    text += "學生編號：" + "{{ student.cid }}\n"; 
+    return confirm(text);
+}
+
+// 確保網頁結構載入完成後才綁定事件
+document.addEventListener("DOMContentLoaded", function() {
+    const deleteForm = document.querySelector('.delete-form');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(event) { 
+            if (!confirmDelete()) { 
+                event.preventDefault(); // 使用者按下「取消」，阻止表單送出
+            } 
+        });
+    }
+});
+</script>
+<style>
+    /* 1. 讓整體刪除方塊精緻居中，並限制寬度 */
+    .delete-container {
+        text-align: left;
+        border: 1px solid rgb(220, 53, 69); /* 💡 刪除頁面改用微紅色調邊框，提示這是一個危險操作 */
+        padding: 30px 40px;
+        margin: 40px auto;
+        width: 350px;
+        /* border-radius: 8px; */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* 淡淡的陰影，讓方塊更有立體感 */
+        background-color: #fffcfc; /* 微微帶有一點點粉白的背景色 */
+    }
+
+    /* 2. 標題與內文美化 */
+    .delete-container h2 {
+        color: #dc3545; /* 警告紅 */
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.4rem;
+    }
+
+    .student-info, tr, th {
+        border: #212529 1px solid;
+        border-collapse: collapse;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        color: #495057;
+    }
+
+    .student-info strong {
+        color: #212529;
+    }
+
+    /* 3. 按鈕與控制區排版 */
+    .action-container {
+        display: flex;
+        justify-content: space-between; /* 讓「確認刪除」與「取消」一左一右對齊 */
+        align-items: center;
+    }
+
+    /* 4. 刪除按鈕美化 */
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-delete:hover {
+        background-color: #bd2130; /* 滑鼠移上去時顏色變深 */
+    }
+
+    /* 5. 取消連結美化（把它包裝得像一個優雅的灰色按鈕） */
+    .btn-cancel {
+        text-decoration: none;
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+
+    .btn-cancel:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<!-- 使用新設計的 delete-container 外盒包覆，確保網頁結構完美居中 -->
+<div class="delete-container">
+    <h2>⚠️ 確定要刪除嗎？</h2>
+    
+    <table class="student-info">
+        <tr>
+            <th>學生姓名：</th>
+            <td>{{ student.cname }}</td>
+        </tr>
+        <tr>
+            <th>學生編號：</th>
+            <td>{{ student.cid }}</td>
+        </tr>
+        <tr>
+            <th>性別：</th>
+            <td>{% if student.csex == 'M' %}男{% else %}女{% endif %}</td>
+        </tr>
+        <tr>
+            <th>生日：</th>
+            <td>{{ student.cbirthday|date:"Y-m-d" }}</td>
+        </tr>
+        <tr>
+            <th>電話：</th>
+            <td>{{ student.cphone }}</td>
+        </tr>
+        <tr>
+            <th>地址：</th>
+            <td>{{ student.caddr }}</td>
+        </tr>
+        <tr>
+            <th>信箱：</th>
+            <td>{{ student.cemail }}</td>
+        </tr>
+    </table>
+
+    <!-- 💡 已幫表單補上 class="delete-form"，並徹底移除了內部衝突的舊 <script> 區塊 -->
+    <form method="post" action="{% url 'delete' student.cid %}" class="delete-form">
+        {% csrf_token %}
+        <div class="action-container">
+            <button type="submit" class="btn-delete">確認刪除</button>
+            <a href="{% url 'index' %}" class="btn-cancel">取消</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

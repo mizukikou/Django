@@ -1,66 +1,59 @@
 {% extends "base.html" %}
 {% block title %}學生資料管理系統 - 新增資料{% endblock %}
 {% block content %}
-<style>
-    form {
-        text-align: left;           /* 1. 讓表單內部的文字和輸入框靠左對齊，比較整齊 */
-        border: 1px solid rgb(199, 22, 110);
-        padding: 20px 40px;         /* 上下 20px，左右 40px 的內距 */
-        margin: 20px auto;          /* 2. 上下留點空隙，並且靠 margin: auto 讓整個表單居中 */
-        width: 320px;               /* 3. 關鍵：限制表單寬度，才不會無限延伸 */
-        border-radius: 8px;         /* 順便幫你加上圓角，看起來更現代專業 */
-    }
-    
-    /* 4. 讓每個輸入框的前置標籤（如學號、姓名）統一寬度，輸入框才會完美對齊 */
-    form label.field-title {
-        display: inline-block;
-        width: 60px;
-        text-align: right;
-        margin-right: 10px;
-    }
-    
-    /* 5. 讓新增按鈕單獨置中 */
-    .submit-container {
-        text-align: center;
-        margin-top: 15px;
-    }
-    
-</style>
-<div>
-    <h1 style="text-align: center;">新增學生資料</h1>
-    <h3 style="text-align: center;"><a href="{% url 'index' %}">回到首頁</a></h3>
+<div class="container" style="max-width: 640px;">
+    <h1>新增學生資料</h1>
+
+    <div class="nav-bar">
+        <a href="{% url 'index' %}" class="btn btn-info">← 回到首頁</a>
+    </div>
+
     <form method="post" action="{% url 'post' %}">
         {% csrf_token %}
-        
-        <!-- 💡 重點：加上 class="field-title"，並且把後面的 <br> 改成兩個 <br><br> 拉開間距 -->
-        <label for="cid" class="field-title">學號：</label>
-        <input type="text" id="cid" name="cid" required><br><br>
-        
-        <label for="cname" class="field-title">姓名：</label>
-        <input type="text" id="cname" name="cname" required><br><br>
-        
-        <label class="field-title">性別：</label>
-        <input type="radio" id="csex_m" name="csex" value="M" checked><label for="csex_m">男</label>
-        <input type="radio" id="csex_f" name="csex" value="F"><label for="csex_f">女</label>
-        <br><br>
-        
-        <label for="cbirthday" class="field-title">生日：</label>
-        <input type="date" id="cbirthday" name="cbirthday"><br><br>
-        
-        <label for="cphone" class="field-title">電話：</label>
-        <input type="text" id="cphone" name="cphone"><br><br>
-        
-        <label for="caddr" class="field-title">地址：</label>
-        <input type="text" id="caddr" name="caddr"><br><br>
-        
-        <label for="cemail" class="field-title">信箱：</label>
-        <input type="email" id="cemail" name="cemail"><br><br>
-        
-        <div class="submit-container">
-            <input type="submit" value="新增">
+
+        <div class="form-group">
+            <label for="cid">學號</label>
+            <input type="text" id="cid" name="cid" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cname">姓名</label>
+            <input type="text" id="cname" name="cname" required>
+        </div>
+
+        <div class="form-group">
+            <label>性別</label>
+            <label style="display:inline-block; font-weight:normal; margin-right:20px;">
+                <input type="radio" name="csex" value="M" checked> 男
+            </label>
+            <label style="display:inline-block; font-weight:normal;">
+                <input type="radio" name="csex" value="F"> 女
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="cbirthday">生日</label>
+            <input type="date" id="cbirthday" name="cbirthday">
+        </div>
+
+        <div class="form-group">
+            <label for="cphone">電話</label>
+            <input type="text" id="cphone" name="cphone">
+        </div>
+
+        <div class="form-group">
+            <label for="caddr">地址</label>
+            <input type="text" id="caddr" name="caddr">
+        </div>
+
+        <div class="form-group">
+            <label for="cemail">信箱</label>
+            <input type="email" id="cemail" name="cemail">
+        </div>
+
+        <div class="actions">
+            <input type="submit" class="btn btn-success" value="✨ 新增資料">
         </div>
     </form>
-
-
 </div>
 {% endblock %}

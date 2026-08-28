@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-<html lang="zh-Hant-TW">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-    <form action="/search_list/" method="get">
-        <label for="cname">姓名：</label>
-        <input type="text" id="cname" name="cname">
-        <p><button type="submit">搜尋</button></p>
+{% extends "base.html" %}
+{% block title %}學生資料 - 姓名搜尋{% endblock %}
+{% block content %}
+<div class="container" style="max-width: 640px;">
+    <h1>學生姓名搜尋</h1>
+
+    <div class="nav-bar">
+        <a href="{% url 'index' %}" class="btn btn-info">← 回到首頁</a>
+    </div>
+
+    <form action="/search_list/" method="get" class="search-bar">
+        <label for="cname" style="margin:0;">姓名：</label>
+        <input type="text" id="cname" name="cname" placeholder="輸入要搜尋的姓名關鍵字" required>
+        <button type="submit" class="btn btn-primary">🔍 搜尋</button>
     </form>
-</body>
-</html>
+
+    <div class="info-card">
+        <p>💡 支援模糊搜尋，例如輸入「王」會列出所有姓名包含「王」的學生。</p>
+    </div>
+</div>
+{% endblock %}
