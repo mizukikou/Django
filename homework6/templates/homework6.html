@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  {% load static %}
+  <head>
+    <meta charset="utf-8">
+	<title>個人小檔案</title>
+	<style>
+      body{
+        background-color: #d1fce8;
+      }
+      /* 讓 fieldset 內的所有文字保留原始碼中的連續空白 */
+      /* 僅對有 .space-align 類別的文字保留鍵盤空白，不影響其他欄位 */
+      .space-align {
+        white-space: pre;
+      }
+      .img1 {
+          display: block;       /* 🎯 關鍵：將圖片從 inline 變成 block 元素 */
+          margin-right: auto;
+          margin-left: auto;    /* 現在這兩行 margin 就能成功把圖片往中間推了 */
+      }
+      /* 💡 新增按鈕樣式，讓超連結看起來像真正的按鈕 */
+      .btn {
+          display: inline-block;
+          padding: 4px 12px;
+          margin-top: 10px;
+          margin-right: 5px;
+          background-color: #f0f0f0;
+          color: black;
+          text-decoration: none; /* 移除超連結下底線 */
+          border: 1px solid #767676;
+          border-radius: 2px;
+          font-family: Arial, sans-serif;
+          font-size: 13.3333px;
+          cursor: pointer;
+      }
+      .btn:hover {
+          background-color: #e5e5e5; /* 滑鼠懸停時變深 */
+      }
+    </style>
+  </head>	
+  <body>
+    <div>
+      <img class="img1" src="{% static 'image/profile1.jpg' %}" alt="個人頭像">
+    </div>
+    
+    <!-- 表單開始 -->
+    <form method="post">
+      <!-- 關鍵修正：一定要緊跟在 form 下方加上這一行 -->
+      {% csrf_token %}
+      
+      <fieldset>
+        <legend>個人資訊</legend>
+        <span class="space-align">姓        名：</span>
+        <input type="text" name="username" size="20"><br>
+        <span class="space-align">性        別：</span>
+        <input type="radio" name="usersex" id="usersex_male" value="male">男
+        <input type="radio" name="usersex" id="usersex_female" value="female">女<br>
+        最高學歷：
+        <select name="userschool">
+          <option value="高中以下">高中以下</option>
+          <option value="大專院校">大專院校</option>
+          <option value="碩士">碩士</option>
+          <option value="博士">博士</option>
+          <option value="其它">其它</option>
+        </select><br>
+      </fieldset><br>      
+      
+      <fieldset>
+        <legend>其它資訊</legend> 
+        您喜歡下列哪些活動（可複選）？
+        <!-- 您原本的設計非常棒，name 都有統一為 userinterest -->
+        <input type="checkbox" name="userinterest" value="閱讀">閱讀
+        <input type="checkbox" name="userinterest" value="打球">打球
+        <input type="checkbox" name="userinterest" value="逛街">逛街
+        <input type="checkbox" name="userinterest" value="聽音樂">聽音樂
+        <input type="checkbox" name="userinterest" value="水上運動">水上運動
+        <input type="checkbox" name="userinterest" value="旅行">旅行<br> 
+        {% comment %} 新增全選按鈕 {% endcomment %}
+        <input type="checkbox" id="select_all" onclick="selectAll(this)">全選<br>
+        <script>
+          function selectAll(source) {
+            checkboxes = document.getElementsByName('userinterest');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+              checkboxes[i].checked = source.checked;
+            }
+          }
+        </script>
+        您對於使用臉書經營社群有何看法？<br>
+        <textarea name="userthought" cols="45" rows="4"></textarea><br>  
+      </fieldset><br>  
+      
+      <input type="submit" value="傳送資料">   
+      <input type="reset" value="清除資料">                     
+    </form>   
+
+    <!-- 🎯 新增的兩個按鈕放置於表單外部，確保單純做網頁跳轉 -->
+    <div>
+      <a href="/homework6/" class="btn">回首頁</a>
+      <a href="/show_all/" class="btn">查看所有資料</a>
+    </div>
+  </body> 
+</html>
