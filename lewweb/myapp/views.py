@@ -46,7 +46,10 @@ def predict(request):
 
             features.extend(float(district == selected) for selected in DISTRICTS)
             model = _load_model()
-            prediction = model.predict([features])[0]
+            import pandas as pd
+
+            input_data = pd.DataFrame([features], columns=model.feature_names_in_)
+            prediction = model.predict(input_data)[0]
             context["prediction"] = f"{float(prediction):,.0f}"
         except (KeyError, TypeError, ValueError, OSError, ImportError) as error:
             context["error"] = f"請確認輸入資料正確：{error}"

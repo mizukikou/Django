@@ -4,29 +4,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>房價預測</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>房價預測 — 住居估算所</title>
+  <!-- 載入外部主要樣式表 -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
 </head>
 <body>
-  <main>
-    <h1>房價預測</h1>
-    <form method="post">
-      {% csrf_token %}
-      <p><label for="area">坪數</label><input id="area" name="area" type="number" min="0" step="any" required></p>
-      <p><label for="age">屋齡</label><input id="age" name="age" type="number" min="0" step="any" required></p>
-      <p><label for="rooms">房間數</label><input id="rooms" name="rooms" type="number" min="0" step="any" required></p>
-      <p><label for="floor">樓層</label><input id="floor" name="floor" type="number" min="0" step="any" required></p>
-      <p><label for="metro_distance">捷運距離（公尺）</label><input id="metro_distance" name="metro_distance" type="number" min="0" step="any" required></p>
-      <p><label for="school_distance">學校距離（公尺）</label><input id="school_distance" name="school_distance" type="number" min="0" step="any" required></p>
-      <p><label for="parking">有車位</label><select id="parking" name="parking"><option value="1">有</option><option value="0">無</option></select></p>
-      <p><label for="district">行政區</label><select id="district" name="district" required>
-        {% for district in districts %}<option value="{{ district }}">{{ district }}</option>{% endfor %}
-      </select></p>
-      <button type="submit">開始預測</button>
-    </form>
 
-    {% if prediction %}<h2>預估房價：{{ prediction }}</h2>{% endif %}
-    {% if error %}<p role="alert">{{ error }}</p>{% endif %}
-  </main>
+  <!-- 網頁核心主外殼容器 -->
+  <div class="page-shell">
+    
+    <!-- 1. 頂部網站導覽列 -->
+    <header class="site-header">
+      <a class="brand" href="/">住居估算所</a>
+      <div class="status" aria-label="模型運行狀態">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>模型已就緒</span>
+      </div>
+    </header>
+
+    <!-- 2. 主工作區區塊 -->
+    <main class="workspace">
+      
+      <!-- 2-1. 左側：介紹與結果顯示面板 -->
+      <section class="intro-panel">
+        <p class="eyebrow">TAIWAN HOME ESTIMATOR / 01</p>
+        <h1>用資料，<br><em>看見房子的價值。</em></h1>
+        <p class="intro-copy">
+          輸入房屋條件與所在區域，取得模型估算的房價。數值越接近物件現況，結果越具參考性。
+        </p>
+
+        <!-- 依據 Django 後端傳入狀態，動態切換結果面板或提示資訊 -->
+        {% if prediction %}
+          <article class="result-panel" aria-live="polite">
+            <p class="result-label">預估房價</p>
+            <p class="result-value">
+              <strong>{{ prediction }}</strong><span> 萬元</span>
+            </p>
+            <p class="result-note">依照目前輸入條件計算</p>
+          </article>
+        {% else %}
+          <div class="tip-panel">
+            <span class="tip-mark" aria-hidden="true">i</span>
+            <p>填寫右側資料後，預測結果會顯示在這裡。</p>
+          </div>
+        {% endif %}
+      </section>
+
+      <!-- 2-2. 右側：房屋條件輸入表單面板 -->
+      <section class="form-panel">
+        <header class="section-heading">
+          <div class="heading-text">
+            <p class="eyebrow">PROPERTY DETAILS</p>
+            <h2>物件資料</h2>
+          </div>
+          <span class="step-count">01 / 01</span>
+        </header>
+
+        <!-- 房價估算 POST 表單 -->
+        <form method="post" autocomplete="off">
+          {% csrf_token %}
+          
+          <!-- 表單輸入欄位網格系統 -->
+          <div class="field-grid">
+            
+            <div class="field">
+              <label for="area">坪數 <span class="unit">坪</span></label>
+              <input id="area" name="area" type="number" min="0" step="any" placeholder="例如 28" required>
+            </div>
+            
+            <div class="field">
+              <label for="age">屋齡 <span class="unit">年</span></label>
+              <input id="age" name="age" type="number" min="0" step="any" placeholder="例如 8" required>
+            </div>
+            
+            <div class="field">
+              <label for="rooms">房間數 <span class="unit">間</span></label>
+              <input id="rooms" name="rooms" type="number" min="0" step="any" placeholder="例如 3" required>
+            </div>
+            
+            <div class="field">
+              <label for="floor">樓層 <span class="unit">樓</span></label>
+              <input id="floor" name="floor" type="number" min="0" step="any" placeholder="例如 6" required>
+            </div>
+            
+            <div class="field">
+              <label for="metro_distance">捷運距離 <span class="unit">公尺</span></label>
+              <input id="metro_distance" name="metro_distance" type="number" min="0" step="any" placeholder="例如 450" required>
+            </div>
+            
+            <div class="field">
+              <label for="school_distance">學校距離 <span class="unit">公尺</span></label>
+              <input id="school_distance" name="school_distance" type="number" min="0" step="any" placeholder="例如 800" required>
+            </div>
+            
+            <div class="field">
+              <label for="parking">車位</label>
+              <select id="parking" name="parking">
+                <option value="1">有車位</option>
+                <option value="0">無車位</option>
+              </select>
+            </div>
+            
+            <div class="field">
+              <label for="district">行政區</label>
+              <select id="district" name="district" required>
+                <option value="" disabled selected hidden>請選擇行政區</option>
+                {% for district in districts %}
+                  <option value="{{ district }}">{{ district }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+          </div>
+
+          <!-- 若後端檢驗資料發生異常，動態跳出錯誤提示區 -->
+          {% if error %}
+            <p class="error-message" role="alert">⚠️ {{ error }}</p>
+          {% endif %}
+
+          <!-- 送出按鈕 -->
+          <button type="submit" class="btn-submit">
+            <span>開始估算</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </button>
+          
+          <p class="form-footnote">
+            估算結果僅供參考，實際價格仍會受市場與物件狀況影響。
+          </p>
+        </form>
+      </section>
+
+    </main>
+  </div>
+
 </body>
 </html>

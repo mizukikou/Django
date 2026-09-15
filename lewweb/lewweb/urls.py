@@ -1,24 +1,19 @@
 """
 URL configuration for lewweb project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path, include
 
+# 💡 引入 Django 核心設定與靜態檔案路由工具
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myapp.urls')),
-
+    path('', include('myapp.urls')), # 連結至您 myapp 內部的 urls.py
 ]
+
+# 🛠️ 【強效防錯】在開發環境（DEBUG = True）下，強制讓 Django 伺服器幫我們把 static 資料夾掛載到網址列
+if settings.DEBUG:
+    # 這裡會動態將 settings.py 裡的 STATIC_URL 與 STATICFILES_DIRS 綁定進路由中
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
