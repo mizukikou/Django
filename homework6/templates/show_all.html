@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>所有使用者資料</title>
+    <style>
+      /* 1. 全域背景色調，與 homework6.html 一致 */
+      body {
+        background-color: #d1fce8;
+        font-family: "Microsoft JhengHei", Arial, sans-serif;
+        padding: 20px;
+        margin: 0;
+      }
+
+      /* 2. 置中、帶有漸層背景的圓角主標題 */
+      .main-title {
+        text-align: center;
+        background: linear-gradient(135deg, #a8f5d0 0%, #7ee8b7 100%);
+        padding: 15px 30px;
+        border-radius: 30px;
+        width: fit-content;
+        margin: 0 auto 30px auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        font-size: 28px;
+        font-weight: bold;
+        color: #1a3325;
+      }
+
+      /* 3. 每筆資料的白色圓角卡片外框 */
+      .user-card {
+        background-color: white;
+        border: 2px solid #2b4c3f;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        max-width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
+      }
+
+      /* 4. 資料列文字樣式與間距 */
+      .info-row {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #2c3e50;
+        margin-bottom: 8px;
+      }
+
+      /* 5. 欄位名稱粗體字 */
+      .label-text {
+        font-weight: bold;
+        color: #000000;
+      }
+
+      /* 6. 興趣點清單的縮排與間距 */
+      .interest-list {
+        margin: 5px 0 5px 20px;
+        padding-left: 20px;
+      }
+
+      .interest-list li {
+        font-size: 17px;
+        line-height: 1.6;
+        color: #34495e;
+      }
+
+      /* 7. 底部的回首頁功能按鈕 */
+      .btn-container {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 40px;
+      }
+
+      .btn-home {
+        display: inline-block;
+        padding: 8px 24px;
+        background-color: #f0f0f0;
+        color: #000000;
+        text-decoration: none;
+        border: 1px solid #767676;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .btn-home:hover {
+        background-color: #e5e5e5;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- 主標題區塊 -->
+    <div class="main-title">個人小檔案列表</div>
+
+    <!-- 🎯 讀取並渲染多筆使用者資料 -->
+    {% for user in users %}
+      <div class="user-card">
+        <div class="info-row"><span class="label-text">姓名：</span>{{ user.username }}</div>
+        <div class="info-row"><span class="label-text">性別：</span>{{ user.usersex }}</div>
+        <div class="info-row"><span class="label-text">學歷：</span>{{ user.userschool }}</div>
+        
+        <div class="info-row">
+          <span class="label-text">興趣：</span>
+          <!-- 💡 巢狀迴圈：判斷如果興趣是清單/陣列型態則一一印出 -->
+          <ul class="interest-list">
+            {% for interest in user.userinterest %}
+              <li>{{ interest }}</li>
+            {% empty %}
+              <li>無</li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <div class="info-row">
+          <span class="label-text">看法為：</span><br>
+          {{ user.userthought|linebreaksbr }}
+        </div>
+      </div>
+    {% empty %}
+      <div class="user-card" style="text-align: center; color: #7f8c8d;">
+        目前資料庫中尚無任何使用者小檔案資料。
+      </div>
+    {% endfor %}
+
+    <!-- 底部功能按鈕 -->
+    <div class="btn-container">
+      <a href="/homework6/" class="btn-home">回填寫表單首頁</a>
+    </div>
+
+  </body>
