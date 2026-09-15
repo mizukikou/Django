@@ -49,8 +49,11 @@ def predict(request):
             import pandas as pd
 
             input_data = pd.DataFrame([features], columns=model.feature_names_in_)
-            prediction = model.predict(input_data)[0]
-            context["prediction"] = f"{float(prediction):,.0f}"
+            raw_prediction = float(model.predict(input_data)[0])
+            prediction = max(0.0, raw_prediction)
+            context["prediction"] = f"{prediction:,.0f}"
+            if raw_prediction < 0:
+                context["prediction_notice"] = "此組條件已超出模型可解釋範圍，結果已以 0 萬元顯示。"
         except (KeyError, TypeError, ValueError, OSError, ImportError) as error:
             context["error"] = f"請確認輸入資料正確：{error}"
 

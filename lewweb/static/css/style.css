@@ -187,6 +187,13 @@ body {
   color: rgba(255,255,255,0.4);
 }
 
+.result-warning {
+  margin-top: 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+
 /* 6. 右側面板：表單輸入區 */
 .form-panel {
   flex: 1;

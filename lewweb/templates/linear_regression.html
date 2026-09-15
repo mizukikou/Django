@@ -41,6 +41,9 @@
               <strong>{{ prediction }}</strong><span> 萬元</span>
             </p>
             <p class="result-note">依照目前輸入條件計算</p>
+            {% if prediction_notice %}
+              <p class="result-warning" role="status">{{ prediction_notice }}</p>
+            {% endif %}
           </article>
         {% else %}
           <div class="tip-panel">

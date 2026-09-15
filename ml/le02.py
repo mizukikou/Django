@@ -11,7 +11,9 @@ import pickle                    # 物件序列化套件，能將訓練好的模
 
 # 從 Scikit-Learn 機器學習庫中引入核心模組：
 from sklearn.model_selection import train_test_split  # 用於將完整數據隨機切分為「訓練集」與「測試集」
-from sklearn.linear_model import LinearRegression     # 線性回歸演算法類別，用於擬合最佳擬合直線（面）
+from sklearn.linear_model import PoissonRegressor     # 使用 log link 的回歸模型，預測值維持為正數
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error       # 評估指標：平均絕對誤差（MAE）
 from sklearn.metrics import mean_squared_error        # 評估指標：均方誤差（MSE），後續開根號變 RMSE
 from sklearn.metrics import r2_score                  # 評估指標：決定係數（R² Score），代表模型解釋力
@@ -61,7 +63,10 @@ y_train.to_csv("./LinearRegressionData_train_y.csv", index=False, encoding="utf-
 # ==============================================================================
 # 🤖 步驟 5：建立模型與引導機器學習（Model Training）
 # ==============================================================================
-model = LinearRegression()     # 實例化線性回歸模型
+model = Pipeline([
+    ("scaler", StandardScaler()),
+    ("regressor", PoissonRegressor(alpha=0.01, max_iter=2000))
+])
 model.fit(X_train, y_train)    # 呼叫 fit 指令：讓演算法透過最小平方法（OLS）去找出最完美的權重係數與截距
 
 # 【模型持久化】將訓練好的精準模型打包序列化，儲存為二進位檔案，未來可直接載入，不需重新訓練
@@ -74,7 +79,7 @@ with open("./LinearRegressionModel.pkl", "wb") as f:
 with open("./LinearRegressionModel.pkl", "rb") as f:
     model = pickle.load(f)     # 模擬從硬碟讀取模型檔案
 
-y_pred = model.predict(X_test) # 輸入測試集的特徵 X_test，產出模型預測出的房價數值陣列 y_pred
+y_pred = np.maximum(model.predict(X_test), 0.0) # 房價不可為負，將線性回歸外插的負值限制為 0
 
 # 建立實際房價與預測房價的對照表，方便肉眼直觀對比模型精準度
 result = pd.DataFrame({
@@ -111,7 +116,7 @@ print(f"R²   (決定係數)     = {r2:.4f}")
 # 係數為負數：該特徵數值越大，房價通常隨之暴跌（負相關，如屋齡或捷運距離公尺）。
 coef = pd.DataFrame({
     "特徵": X.columns,
-    "係數 (權重)": model.coef_
+    "係數 (權重)": model.named_steps["regressor"].coef_
 })
 coef = coef.sort_values("係數 (權重)", ascending=False) # 依照影響力由高到低進行排序
 print("\n=== [8/11] 各項特徵權重影響力排名 ===")
@@ -154,7 +159,7 @@ new_house = pd.DataFrame([test_values], columns=[
 new_house = new_house[X.columns]
 
 # 呼叫模型進行新房價預測
-price_array = model.predict(new_house)
+price_array = np.maximum(model.predict(new_house), 0.0)
 
 # 🛠️ 【本次修正核心】：透過指定索引 [0] 精確取出 NumPy 陣列中的純量數值，完全根除 TypeError 錯誤
 predicted_price = float(price_array[0])
