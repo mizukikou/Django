@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>房價預測</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <main>
+    <h1>房價預測</h1>
+    <form method="post">
+      {% csrf_token %}
+      <p><label for="area">坪數</label><input id="area" name="area" type="number" min="0" step="any" required></p>
+      <p><label for="age">屋齡</label><input id="age" name="age" type="number" min="0" step="any" required></p>
+      <p><label for="rooms">房間數</label><input id="rooms" name="rooms" type="number" min="0" step="any" required></p>
+      <p><label for="floor">樓層</label><input id="floor" name="floor" type="number" min="0" step="any" required></p>
+      <p><label for="metro_distance">捷運距離（公尺）</label><input id="metro_distance" name="metro_distance" type="number" min="0" step="any" required></p>
+      <p><label for="school_distance">學校距離（公尺）</label><input id="school_distance" name="school_distance" type="number" min="0" step="any" required></p>
+      <p><label for="parking">有車位</label><select id="parking" name="parking"><option value="1">有</option><option value="0">無</option></select></p>
+      <p><label for="district">行政區</label><select id="district" name="district" required>
+        {% for district in districts %}<option value="{{ district }}">{{ district }}</option>{% endfor %}
+      </select></p>
+      <button type="submit">開始預測</button>
+    </form>
+
+    {% if prediction %}<h2>預估房價：{{ prediction }}</h2>{% endif %}
+    {% if error %}<p role="alert">{{ error }}</p>{% endif %}
+  </main>
+</body>
+</html>

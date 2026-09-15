@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>post2_response</title>
+</head>
+<body>
+      <h1>您選擇的項目為：</h1>
+      <ul>
+        {% for i in item %}
+          <li>{{ i }}</li>
+        {% endfor %}
+      </ul>
+      <h2><a href="/post2/">返回表單頁面</a></h2>
+</body>
+</html>
