@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>會員專區</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+      font-family: "Microsoft JhengHei", Arial, sans-serif;
+    }
+    .dashboard-card {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      width: 320px;
+      text-align: center;
+    }
+    .dashboard-card h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    .dashboard-card p {
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+    .logout-btn {
+      display: inline-block;
+      width: 100%;
+      padding: 0.6rem;
+      box-sizing: border-box;
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    .logout-btn:hover {
+      background-color: #b02a37;
+    }
+    .messages {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem;
+      width: 320px;
+      box-sizing: border-box;
+    }
+    .messages li {
+      padding: 0.7rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .messages li.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .messages li.info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    .messages li.warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    }
+    .messages li.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .messages li.debug {
+      background-color: #e2e3e5;
+      color: #383d41;
+      border: 1px solid #d6d8db;
+    }
+  </style>
+</head>
+<body>
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <div class="dashboard-card">
+    <h2>會員專區</h2>
+    <p>歡迎，{{ user }}！您已成功登入。</p>
+    <a class="logout-btn" href="{% url 'logout' %}">登出</a>
+  </div>
+</body>
+</html>

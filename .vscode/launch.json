@@ -1,0 +1,24 @@
+{
+  // 使用 IntelliSense 以得知可用的屬性。
+  // 暫留以檢視現有屬性的描述。
+  // 如需詳細資訊，請瀏覽: https://microsoft.com
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python 偵錯工具: Django 伺服器",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/ch3_14/manage.py", // 👈 1. 必須加在這裡！
+      "args": ["runserver", "192.168.59.11:8080"],
+      "django": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python 偵錯工具: 目前檔案",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}", // 👈 2. 這裡請改回預設的 ${file} 即可
+      "console": "integratedTerminal"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{# 1. 範本繼承 (Template Inheritance) #}
+{# 引入網站的主版頁面，確保網頁的導覽列、頁尾以及引入的 Bootstrap 5 樣式與全站一致 #}
+{% extends 'member_base.html' %}
+
+{# 2. 標題區塊覆寫 #}
+{# 將瀏覽器分頁標籤的標題，動態修改為本頁面專屬的「會員頁面」 #}
+{% block title %}
+<title>會員頁面</title>
+{% endblock %}
+
+{# 3. 主要內容區塊 #}
+{# 這裡填入此頁面專屬的會員資料呈現主體 #}
+{% block content %}
+<!-- 建立一個帶有大型陰影 (shadow-lg) 與圓角 (15px) 的高質感白色卡片容器 -->
+<div class="card shadow-lg" style="border-radius: 15px; background-color: #ffffff;">
+    <!-- 卡片內部主體，設定文字全部居中 (text-center)，並加上上方外距 (mt-4) -->
+    <div class="card-body text-center mt-4">
+        
+        <!-- 網頁大標題：下方外距 4單位 (mb-4)、全大寫變形 (text-uppercase)、文字藍色 (text-primary) -->
+        <h2 class="mb-4 text-uppercase text-primary">會員頁面</h2>
+        
+        {# 💡 核心機制一：動態讀取使用者資料 (User Object) #}
+        {# request.user 是 Django 的核心魔法。只要使用者處於登入狀態，Django 就會自動將該使用者的所有欄位資料包進這個物件中，不需要後端工程師手動下 SQL 指令去撈取 #}
+        
+        <!-- 【讀取帳號】利用雙大括號變數語法直接印出登入者的系統帳號，並將字體加粗 (strong) -->
+        <p class="mb-3 fs-5">帳號：<strong>{{ request.user.username }}</strong></p>
+        
+        {# 💡 核心機制二：範本過濾器 (Template Filters) 的應用 #}
+        {# 語法中的豎線「|」代表過律器。因為電話與生日屬於選填欄位，如果使用者當初註冊時沒有填寫，資料庫取出來會是空值 (None 或空字串) #}
+        {# 加上 |default:"未填寫" 後，Django 如果發現該欄位沒資料，就會貼心地自動印出「未填寫」三個字，避免網頁出現一片空白的情況 #}
+        
+        <!-- 【讀取電話】自訂擴充的電話欄位 (tel) -->
+        <p class="mb-3 fs-5">電話：{{ request.user.tel|default:"未填寫" }}</p>
+        
+        <!-- 【讀取生日】自訂擴充的生日欄位 (cBirthday) -->
+        <p class="mb-3 fs-5">生日：{{ request.user.cBirthday|default:"未填寫" }}</p>
+        
+        <!-- 【回首頁按鈕】提供藍色外框 (btn-outline-primary) 的大尺寸按鈕，引導會員點擊切換回首頁 (/index/) -->
+        <a href="/index/" class="btn btn-outline-primary btn-lg">回首頁</a>
+        
+    </div>
+</div>
+{% endblock %}

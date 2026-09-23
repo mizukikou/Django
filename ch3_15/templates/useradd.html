@@ -1,0 +1,95 @@
+{# 1. 範本繼承 (Template Inheritance) #}
+{# 引入網站的主版頁面 (套用固定的導覽列、頁尾與 Bootstrap 樣式) #}
+{% extends 'member_base.html' %}
+
+{# 2. 標題區塊覆寫 #}
+{# 將瀏覽器分頁標籤的標題，修改為本頁面專屬的「會員註冊」 #}
+{% block title %}
+<title>會員註冊</title>
+{% endblock %}
+
+{# 3. 主要內容區塊 #}
+{% block content %}
+{# 建立一個帶有大型陰影 (shadow-lg) 與圓角 (15px) 的白色卡片外框 #}
+<div class="card shadow-lg" style="border-radius: 15px; background-color: #ffffff;">
+    <div class="card-body mt-4">
+        <!-- 表單大標題：文字居中 (text-center)、下方外距 4單位 (mb-4)、全大寫變形 (text-uppercase)、文字藍色 (text-primary) -->
+        <h2 class="text-center mb-4 text-uppercase text-primary">註冊新會員</h2>
+        
+        {# 💡 核心機制一：表單傳遞方式 (Method="POST") #}
+        {# 只要涉及新增、修改、刪除等會改變資料庫內容的操作，或者是傳遞密碼等敏感資料，一律必須使用 POST 方式傳送，資料才不會暴露在網址列中 #}
+        <form action="/useradd/" method="POST">
+            
+            {# 💡 核心機制二：CSRF 安全防護印章 (必寫) #}
+            {# Django 安全機制。會自動在表單內插入一個隱藏的加密金鑰（Token），用來防止「跨站請求偽造 (CSRF)」的駭客攻擊。若沒寫，表單送出時 Django 會直接報錯 403 Forbidden #}
+            {% csrf_token %}
+
+            <!-- 【欄位 1：帳號】 -->
+            <div class="form-group mb-3">
+                <!-- text-danger 的紅色星號 (*) 提示使用者此為必填欄位 -->
+                <label for="username">帳號 <span class="text-danger">*</span></label>
+                <!-- required 代表如果使用者沒打字就按註冊，瀏覽器會直接攔截並提示「請填寫此欄位」 -->
+                <input type="text" class="form-control" id="username" name="username" placeholder="請輸入使用者帳號" required>
+            </div>
+
+            <!-- 【欄位 2：密碼】 -->
+            <div class="form-group mb-3">
+                <label for="password">密碼 <span class="text-danger">*</span></label>
+                {# 💡 核心機制三：前端正規表示式驗證 (pattern) #}
+                {# type="password" 會將輸入的文字自動變成小黑點 ● 隱藏起來 #}
+                {# pattern 內是一串正規表示式，強制規定密碼必須同時滿足：包含英文小寫(?=.*[a-z])、大寫(?=.*[A-Z])、數字(?=.*\d)、特殊符號(?=.*\W)，且長度在 6 到 20 字元之間(.{6,20}) #}
+                {# title 欄位則是用來當密碼不符合規則時，瀏覽器會跳出來提示使用者的錯誤警告文字 #}
+                <input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" required
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{6,20}$"
+                    title="密碼需包含大寫、小寫、數字與特殊符號，長度6-20字元">
+            </div>
+
+            <!-- 【欄位 3：確認密碼】 -->
+            <div class="form-group mb-3">
+                <label for="repassword">確認密碼 <span class="text-danger">*</span></label>
+                <input type="password" class="form-control" id="repassword" name="repassword" placeholder="請再次輸入密碼" required>
+            </div>
+
+            <!-- 【欄位 4：手機號碼】 -->
+            <div class="form-group mb-3">
+                <label for="phone">手機號碼 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="請輸入手機號碼" required>
+            </div>
+
+            <!-- 【欄位 5：電子信箱】 -->
+            <div class="form-group mb-3">
+                <label for="email">電子信箱 <span class="text-danger">*</span></label>
+                <!-- type="email" 會自動幫忙檢查使用者輸入的內容有沒有包含 @ 符號，格式不對就無法送出 -->
+                <input type="email" class="form-control" id="email" name="email" placeholder="請輸入信箱" required>
+            </div>
+
+            <!-- 【欄位 6：生日】 -->
+            <div class="form-group mb-4">
+                <label for="birthday">生日 <span class="text-danger">*</span></label>
+                <!-- type="date" 會讓欄位右側自動出現一個精美的「小日曆月曆視窗」供使用者直接點選日期 -->
+                <input type="date" class="form-control" id="birthday" name="birthday" required>
+            </div>
+
+            {# 💡 核心機制四：後端錯誤訊息提示 #}
+            {# 如果前端驗證通過了（例如：密碼格式正確），但後端 views.py 檢查發現「此帳號已被註冊」或是「兩次密碼輸入不一致」，就會透過 messages 將錯誤傳回來並彈窗提示 #}
+            {% if messages %}
+                <div>
+                    {% for message in messages %}
+                        <p style="color: red;">{{ message }}</p>
+                        <script>alert("{{ message }}");</script>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- 【註冊送出按鈕】 -->
+            <!-- d-grid 代表按鈕會自動拉長到跟表單一樣寬 (100% 寬度)，btn-lg 為大尺寸按鈕 -->
+            <div class="d-grid mb-3">
+                <input type="submit" class="btn btn-primary btn-lg" value="註冊">
+            </div>
+
+            <!-- 引導連結：提供已有帳號的使用者一鍵切換回登入頁面 -->
+            <p class="text-center text-muted mt-4">已有帳號？<a href="/userlogin/" class="fw-bold text-decoration-none text-primary">登入</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

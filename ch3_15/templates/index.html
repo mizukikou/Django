@@ -1,0 +1,71 @@
+{# 1. 範本繼承 (Template Inheritance) #}
+{# 告訴 Django 引入「主版頁面」(Base Template)。本頁面只填入變動的部分，其餘重複的導覽列、頁尾都由 member_base.html 負責 #}
+{% extends "member_base.html" %}
+
+{# 2. 標題區塊覆寫 #}
+{# 挖一個叫 title 的洞，將主版頁面的網頁標籤標題 (Tab Title) 修改為「會員系統首頁」 #}
+{% block title %}
+<title>會員系統首頁</title>
+{% endblock %}
+
+{# 3. 主要內容區塊 #}
+{# 挖一個叫 content 的洞，這裡面放的是這個網頁專屬的畫面主體內容 #}
+{% block content %}
+<!-- 使用 Bootstrap 5 的容器，並設定上方外距 (Margin-Top: 5單位) -->
+<div class="container mt-5">
+    <!-- 建立一個帶有大型陰影 (shadow-lg) 且圓角為 15px 的卡片外框 -->
+    <div class="card shadow-lg" style="border-radius: 15px;">
+        <!-- 卡片內部主體，設定文字全部居中 (text-center) -->
+        <div class="card-body text-center">
+            
+            <!-- 網頁大標題：下方外距 4單位 (mb-4)、全大寫變形 (text-uppercase)、文字藍色 (text-primary) -->
+            <h2 class="mb-4 text-uppercase text-primary">會員系統首頁</h2>
+
+            {# 💡 核心機制一：檢查使用者登入狀態 #}
+            {# request.user.is_authenticated 是 Django 內建功能，若使用者已登入則回傳 True，反之回傳 False #}
+            {% if request.user.is_authenticated %}
+                
+                <!-- 【已登入畫面】顯示歡迎詞，並利用雙大括號變數語法動態印出目前登入者的「使用者帳號」 -->
+                <p class="mb-3 fs-5">歡迎回來，<strong>{{ request.user.username }}</strong>！</p>
+                
+                <!-- 提供前往會員專區的按鈕（綠色 btn-success） -->
+                <a href="/page1/" class="btn btn-success btn-lg me-2">前往會員頁面</a>
+                
+                <!-- 提供登出按鈕（紅色外框 btn-outline-danger） -->
+                <a href="/userlogout/" class="btn btn-outline-danger btn-lg">登出</a>
+                
+            {% else %}
+                
+                <!-- 【未登入畫面】如果使用者還沒登入，顯示紅色的警告文字 (text-danger) -->
+                <p class="mb-3 fs-5 text-danger">您尚未登入</p>
+                
+                <!-- 提供引導登入按鈕（藍色 btn-primary） -->
+                <a href="/userlogin/" class="btn btn-primary btn-lg me-2">登入</a>
+                
+                <!-- 提供註冊帳號按鈕（灰色外框 btn-outline-secondary） -->
+                <a href="/useradd/" class="btn btn-outline-secondary btn-lg">註冊帳號</a>
+                
+            {% endif %}
+
+            {# 💡 核心機制二：訊息框架 (Messages Framework) 處理 #}
+            {# 檢查後端 views.py 是否有透過 messages 模組傳送任何提示訊息（例如：「帳號密碼錯誤」或「登出成功」） #}
+            {% if messages %}
+                <!-- 建立一個區塊用來放提示訊息 -->
+                <div class="mt-4">
+                    {# 因為提示訊息可能不只一條，所以使用迴圈一條一條讀取出來 #}
+                    {% for message in messages %}
+                        
+                        <!-- 寫法 A：直接在網頁上印出紅色的提示文字 -->
+                        <p style="color: red;">{{ message }}</p>
+                        
+                        <!-- 寫法 B：【核心機制三】利用 JavaScript 瀏覽器語法，直接在使用者螢幕上彈出視窗提示 (Alert) -->
+                        <script>alert("{{ message }}");</script>
+                        
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
