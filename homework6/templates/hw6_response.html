@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人小檔案</title>
+    <style>
+        /* 簡單的排版樣式，讓外觀與您的網頁貼近 */
+        body { 
+            background-color: #d1f2e5; 
+            font-family: Arial, sans-serif; 
+            padding: 40px; /* 💡 修正：將 200px 改為 40px，避免畫面被過度擠壓 */
+        }
+        
+        /* 💡 統一設定網頁中所有 p 標籤的字體大小與 h2 相同，且維持正常粗細 */
+        /* 💡 讓 p 和 li 的字體一樣大、不加粗 */
+        p, li {
+            font-size: 1.5em;       /* h2 的網頁預設大小為 1.5em */
+            font-weight: normal;    /* 確保文字是細字，不加粗 */
+        }
+
+        /* 💡 只有 p 標籤需要模擬 h2 的上下大間距 */
+        p {
+            margin-top: 0.83em;     
+            margin-bottom: 0.83em;  
+        }
+
+        /* 💡 精準取消 li 之間的所有垂直間距 */
+        li {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+
+        /* 💡 新增底部的按鈕樣式，使其外觀與您的截圖一致 */
+        .btn {
+            display: inline-block;
+            padding: 4px 12px;
+            margin-top: 15px;
+            margin-right: 5px;
+            background-color: #f0f0f0;
+            color: black;
+            text-decoration: none; /* 移除超連結的下底線 */
+            border: 1px solid #767676;
+            border-radius: 2px;
+            font-family: Arial, sans-serif;
+            font-size: 13.3333px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #e5e5e5; /* 滑鼠懸停時顏色稍加變深 */
+        }
+      </style>
+</head>
+<body>
+    {% if usersex == 'male' or usersex == 'female' %}
+        {% if usersex == 'male' %}
+            <h1>{{ username }} 先生 您好！</h1>
+        {% else %}
+            <h1>{{ username }} 女士 您好！</h1>
+        {% endif %}
+    {% else %}
+        <!-- 💡 備用安全機制：如果未來傳入的 sex 是中文男/女，也能正確判定 -->
+        {% if usersex == '男' or usersex == 'male' %}
+            <h1>{{ username }} 先生 您好！</h1>
+        {% else %}
+            <h1>{{ username }} 女士 您好！</h1>
+        {% endif %}
+    {% endif %}
+
+    <p>您的學歷為：{{ userschool }}</p>
+    <p>您喜歡的活動如下：</p>
+    <ul>
+        {% for interest in userinterest %}
+            <li>{{ interest }}</li>
+        {% endfor %}
+    </ul>
+    <p>您對於使用臉書經營社群有何看法為：</p>
+    <p>{{ userthought }}</p>
+
+    <!-- 🎯 補上畫面最下方的兩個功能跳轉按鈕 -->
+    <div>
+        <a href="/homework6/" class="btn">回首頁</a>
+        <a href="/show_all/" class="btn">查看所有資料</a>
+    </div>
+</body>  
+</html>

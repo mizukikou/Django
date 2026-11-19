@@ -1,0 +1,13 @@
+# 徹底忽略目前資料夾底下的所有虛擬環境系統檔案
+Lib/
+Scripts/
+Include/
+share/
+pyvenv.cfg
+
+# 忽略 Python 自動產生的編譯快取
+__pycache__/
+*.pyc
+
+# 忽略 Django 本地測試用的資料庫檔案
+db.sqlite3

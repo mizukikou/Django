@@ -1,0 +1,188 @@
+{
+  "emmet.showSuggestionsAsSnippets": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "ejs": "html",
+    "django-html": "html"
+  },
+  "emmet.triggerExpansionOnTab": true,
+
+  "files.associations": {
+    "*.html": "html"
+  },
+
+  "explorer.openEditors.visible": 1,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+
+  "editor.fontFamily": "'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace",
+  "editor.fontSize": 20,
+  "editor.fontLigatures": true,
+  "editor.fontWeight": "normal",
+  "editor.lineHeight": 28,
+  "editor.letterSpacing": 1,
+  "editor.lineNumbers": "on",
+  "editor.cursorStyle": "block",
+  "editor.cursorWidth": 2,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.tabCompletion": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": false,
+  "editor.snippetSuggestions": "top",
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  "editor.rulers": [],
+  "editor.selectionHighlight": true,
+  "editor.renderLineHighlight": "line",
+  "editor.renderControlCharacters": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "editor.mouseWheelZoom": true,
+  "editor.minimap.enabled": false,
+  "editor.minimap.renderCharacters": false,
+
+  "diffEditor.ignoreTrimWhitespace": true,
+
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.saveAllFilesBeforeRun": true,
+  "code-runner.defaultLanguage": "javascript",
+  "code-runner.ignoreSelection": true,
+
+  "code-runner.executorMap": {
+    "javascript": "node",
+    "java": "cd $dir && javac -encoding utf-8 $fileName && java $fileNameWithoutExt",
+    "csharp": "clear && echo '' && csc /nologo /utf8output $fileName && .\\$fileNameWithoutExt",
+    "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "php": "D:/xampp/php/php.exe",
+    "python": "python -u $fullFileName",
+    "perl": "perl",
+    "ruby": "ruby",
+    "go": "go run",
+    "lua": "lua",
+    "groovy": "groovy",
+    "powershell": "powershell -ExecutionPolicy ByPass -File",
+    "bat": "cmd /c",
+    "shellscript": "bash",
+    "fsharp": "fsi",
+    "vbscript": "cscript //Nologo",
+    "typescript": "ts-node",
+    "scala": "scala",
+    "swift": "swift",
+    "julia": "julia",
+    "ocaml": "ocaml",
+    "r": "Rscript",
+    "applescript": "osascript",
+    "clojure": "lein exec",
+    "haxe": "haxe --cwd $dirWithoutTrailingSlash --run $fileNameWithoutExt",
+    "rust": "cd $dir && rustc $fileName && $dir$fileNameWithoutExt",
+    "racket": "racket",
+    "ahk": "autohotkey",
+    "autoit": "autoit3",
+    "dart": "dart",
+    "pascal": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+    "d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
+    "haskell": "runghc",
+    "nim": "nim compile --verbosity:0 --hints:off --run",
+    "lisp": "sbcl --script",
+    "v": "v run",
+    "sass": "sass --style expanded",
+    "scss": "scss --style expanded",
+    "less": "cd $dir && lessc $fileName $fileNameWithoutExt.css",
+    "FortranFreeForm": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "fortran-modern": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "fortran_fixed-form": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "fortran": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "sml": "cd $dir && sml $fileName"
+  },
+  "python.defaultInterpreterPath": "C:\\Python\\Python314\\python.exe",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.fontFamily": "'Cascadia Code', 'Courier New', monospace",
+  "terminal.integrated.fontSize": 16,
+
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "args": [
+        "-NoExit",
+        "-Command",
+        "$OutputEncoding=[System.Text.Encoding]::UTF8; [Console]::OutputEncoding=[System.Text.Encoding]::UTF8"
+      ]
+    },
+    "Command Prompt": {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "source": "Git Bash",
+      "icon": "terminal-git-bash"
+    },
+    "python": {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "args": [
+        "/k",
+        "chcp 65001 && cd /d C:\\Workspace\\Python"
+      ],
+      "icon": "terminal-cmd"
+    },
+    "Django": {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "args": [
+        "/k",
+        "chcp 65001 && cd /d C:\\venv1 && Scripts\\activate"
+      ],
+      "icon": "server",
+      "color": "terminal.ansiGreen"
+    },
+    "Python-REPL": {
+      "source": "PowerShell",
+      "args": [
+        "-NoExit",
+        "-Command",
+        "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; python"
+      ]
+    }
+  },
+
+  "vsicons.dontShowNewVersionMessage": true,
+  "git-graph.customEmojiShortcodeMappings": [],
+
+  "task.allowAutomaticTasks": "on",
+  "security.workspace.trust.untrustedFiles": "open",
+  "python.terminal.activateEnvironment": false,
+  "chat.viewSessions.orientation": "stacked",
+
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "html": true
+  },
+  "github.copilot.chat.localeOverride": "zh-TW",
+  "github.copilot.editor.enableAutoCompletions": true,
+
+  "google.antigravity.agent.locale": "zh-TW",
+  "google.antigravity.chat.language": "zh-TW",
+  "google.antigravity.agent.autoApprove": false,
+  "google.antigravity.inlineSuggest.enable": false,
+
+  "telemetry.telemetryLevel": "off",
+  "git.autofetch": true,
+  "emmet.variables": {
+    "lang": "zh-Hant-TW"
+  }
+}

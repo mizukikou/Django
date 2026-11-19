@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* CSS styles for the page */
+        h1 {
+            color: rgb(54, 141, 69);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: larger;
+            margin-top: 50px;
+        }
+        h2 {
+            color: rgb(61, 197, 33);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: medium;
+            margin-top: 20px;
+        }
+        .img1{
+            display: block;
+            margin: 20px auto;
+            width: 600px;
+          }
+        #img2{
+            display: block;
+            margin: 20px auto;
+            width: 600px;
+          }  
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+      <!-- HTML content for the page -->
+      <h1>Welcome to My Sample Page</h1>
+      <h2> 現在時間: <span id="current-time"></span></h2>
+      <script>
+          function updateTime() {
+              const now = new Date();
+              document.getElementById('current-time').textContent = now.toLocaleTimeString();
+          }
+          setInterval(updateTime, 1000);
+          updateTime();
+      </script>
+      <!-- 第一個圖片區塊 -->
+      <div class="image-box-1">
+         <img class="img1" src="img1.jpg" alt="網站圖片">   
+      </div>    
+
+      <!-- 第二個圖片區塊 -->
+      <div class="image-box-2">
+        <img id="img2" src="flower.jpg" alt="網站圖片">   
+      </div>
+    
+</body>
+</html>

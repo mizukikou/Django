@@ -1,0 +1,70 @@
+{# 1. 範本繼承 (Template Inheritance) #}
+{# 引入網站的主版頁面，直接套用全站統一的導覽列、頁尾與 Bootstrap 5 基礎樣式 #}
+{% extends 'member_base.html' %}
+
+{# 2. 標題區塊覆寫 #}
+{# 將瀏覽器分頁標籤的網頁標題，修改為本頁面專屬的「會員登入」 #}
+{% block title %}
+<title>會員登入</title>
+{% endblock %}
+
+{# 3. 主要內容區塊 #}
+{# 這裡填入登入表單的畫面主體 #}
+{% block content %}
+<!-- 建立一個帶有大型陰影 (shadow-lg) 與圓角 (15px) 的高質感白色卡片容器 -->
+<div class="card shadow-lg" style="border-radius: 15px; background-color: #ffffff;">
+    <!-- 卡片內部主體，設定上方外距 (mt-4) -->
+    <div class="card-body mt-4">
+        <!-- 表單大標題：文字居中 (text-center)、下方外距 4單位 (mb-4)、全大寫變形 (text-uppercase)、文字藍色 (text-primary) -->
+        <h2 class="text-center mb-4 text-uppercase text-primary">會員登入</h2>
+        
+        {# 💡 核心機制一：安全傳輸 (Method="POST") #}
+        {# 登入表單涉及極度敏感的「密碼」資料，一律必須使用 POST 方式傳送，資料才不會暴露在瀏覽器的網址列中 #}
+        <form action="/userlogin/" method="POST">
+            
+            {# 💡 核心機制二：CSRF 安全防護 Token (必寫) #}
+            {# Django 內建防禦機制。會自動在表單中插入一個隱藏的隨機加密金鑰，用來防止「跨站請求偽造 (CSRF)」攻擊。如果漏寫這行，送出表單時會直接被 Django 拒絕並噴出 403 錯誤 #}
+            {% csrf_token %}
+
+            <!-- 【欄位 1：帳號輸入框】 -->
+            <div class="form-group mb-3">
+                <!-- text-danger 的紅色星號 (*) 提示使用者此為必填欄位 -->
+                <label for="username">帳號 <span class="text-danger">*</span></label>
+                <!-- required 表示若欄位為空，前端瀏覽器會直接攔截並提示「請填寫此欄位」，阻止表單送出 -->
+                <input type="text" class="form-control" id="username" name="username" placeholder="請輸入使用者帳號" required>
+            </div>
+
+            <!-- 【欄位 2：密碼輸入框】 -->
+            <div class="form-group mb-4">
+                <label for="password">密碼 <span class="text-danger">*</span></label>
+                <!-- type="password" 會將輸入的文字自動遮罩為小黑點 ●，防止密碼在畫面上被旁人偷看 -->
+                <input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" required>
+            </div>
+
+            {# 💡 核心機制三：後端錯誤訊息提示與前端互動 #}
+            {# 當使用者點擊登入後，如果後端 views.py 檢查發現「帳號不存在」或「密碼輸入錯誤」，就會透過 Django messages 框架將錯誤訊息帶回這個頁面 #}
+            {% if messages %}
+                <div>
+                    {# 透過迴圈將可能存在的一條或多條錯誤訊息逐一讀取出來 #}
+                    {% for message in messages %}
+                        <!-- 做法 A：在表單內部、按鈕上方印出紅色的提示文字 (例如：帳號或密碼錯誤) -->
+                        <p style="color: red;">{{ message }}</p>
+                        
+                        <!-- 做法 B：利用 JavaScript 瀏覽器語法，在網頁載入完成時，直接在畫面上彈出警告視窗 (Alert) 強烈提示使用者 -->
+                        <script>alert("{{ message }}");</script>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- 【登入送出按鈕】 -->
+            <!-- d-grid 讓按鈕自動拉長到與表單同寬 (100% 寬度)，btn-lg 則是使用大尺寸按鈕提升點擊體驗 -->
+            <div class="d-grid mb-3">
+                <input type="submit" class="btn btn-primary btn-lg" value="登入">
+            </div>
+
+            <!-- 引導連結：提供尚未註冊的使用者一鍵切換至註冊頁面 (/useradd/) -->
+            <p class="text-center text-muted mt-4">還沒有帳號？<a href="/useradd/" class="fw-bold text-decoration-none text-primary">註冊</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

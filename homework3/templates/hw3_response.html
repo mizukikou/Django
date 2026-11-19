@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人小檔案</title>
+    <style>
+        /* 簡單的排版樣式，讓外觀與您的網頁貼近 */
+        body { background-color: #d1f2e5; font-family: Arial, sans-serif; padding: 200px; }
+            /* 💡 統一設定網頁中所有 p 標籤的字體大小與 h2 相同，且維持正常粗細 */
+        /* 💡 讓 p 和 li 的字體一樣大、不加粗 */
+        p, li {
+            font-size: 1.5em;       /* h2 的網頁預設大小為 1.5em */
+            font-weight: normal;    /* 確保文字是細字，不加粗 */
+        }
+
+        /* 💡 只有 p 標籤需要模擬 h2 的上下大間距 */
+        p {
+            margin-top: 0.83em;     
+            margin-bottom: 0.83em;  
+        }
+
+        /* 💡 精準取消 li 之間的所有垂直間距 */
+        li {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+      </style>
+</head>
+<body>
+    {% if usersex == 'male' %}
+        <h1>{{ username }} 先生 您好！</h1>
+    {% else %}
+        <h1>{{ username }} 女士 您好！</h1>
+    {% endif %}
+    <p>您的學歷為：{{ userschool }}</p>
+    <p>您喜歡的活動如下：</p>
+    <ul>
+        {% for interest in userinterest %}
+            <li>{{ interest }}</li>
+        {% endfor %}
+    </ul>
+    <p>您對於使用臉書經營社群有何看法為：</p>
+    <p>{{ userthought }}</p>
+</body>  
+</html>

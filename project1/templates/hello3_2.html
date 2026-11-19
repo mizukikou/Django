@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hello3_2</title>
+  <link rel="stylesheet" href=" {% static 'css/style.css' %}">
+</head>
+<body>
+      <div style="text-align: center;">
+        <img class="img1" src="{% static 'image/lady.png' %}" alt="Image">
+      </div>
+      <!-- HTML content for the page -->
+      <h1> {{username}}! Welcome to My Sample Page Hello3  </h1>
+      <h2> 現在時間: <span id="current-time"></span></h2>
+      <script>
+          function updateTime() {
+              const now = new Date();
+              document.getElementById('current-time').textContent = now.toLocaleTimeString();
+          }
+          setInterval(updateTime, 1000);
+          updateTime();
+      </script>
+</body>
+</html>

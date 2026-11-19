@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice 3</title>
+</head>
+<body>
+    <h1>People Information</h1>
+
+      {% for person in people %}
+        <h2>第{{ forloop.counter }}人</h2>
+     <ul>
+        <li>{{ person.name }} - {{ person.phone }} - {{ person.age }}</li>
+    </ul>
+        {% empty%}
+        <p>No people information available.</p>
+      {% endfor %}
+
+</html>
